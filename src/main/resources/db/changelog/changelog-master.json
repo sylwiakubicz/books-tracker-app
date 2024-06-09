@@ -59,6 +59,12 @@
         "relativeToChangelogFile": true,
         "file": "createUsers_BookStatesTable.xml"
       }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "insertDataToStatusesTable.xml"
+      }
     }
   ]
 }
