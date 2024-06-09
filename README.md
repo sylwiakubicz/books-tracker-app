@@ -1,11 +1,12 @@
 <h1>books-tracker</h1>
 
 <h2>Project Description</h2>
-Books Tracker to aplikacja webowa umożliwiająca zarządzanie biblioteką książek oraz śledzenie postępów czytania. 
-Administrator ma pełne uprawnienia do zarządzania bazą książek: dodawania nowych pozycji, edytowania istniejących 
-oraz ich usuwania, a także zarządzania kontami użytkowników. Użytkownicy mogą przeglądać książki i dodawać je do 
-swoich list, przypisując statusy: przeczytane, w trakcie czytania, do przeczytania. Projekt jest idealny dla 
-miłośników książek, którzy chcą zorganizować swoją bibliotekę i śledzić swoje postępy czytelnicze.
+Books Tracker is a web application designed for managing a personal book library and tracking reading progress. 
+Administrators have full control over the book database, including adding new books, editing existing ones, 
+deleting books, and managing user accounts. Users can browse available books and add them to their personal 
+lists, assigning statuses such as read, in progress, and to read. This project is perfect for book enthusiasts 
+looking to organize their library and keep track of their reading progress.
+
 
 <h2>Author</h2>
 <p>Sylwia Kubicz</p>
