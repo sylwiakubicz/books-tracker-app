@@ -65,6 +65,12 @@
         "relativeToChangelogFile": true,
         "file": "insertDataToStatusesTable.xml"
       }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "insertDataToUserRolesTable.xml"
+      }
     }
   ]
 }
