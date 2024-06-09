@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Book {
+public class Books {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
 
     @NotNull
@@ -30,7 +30,7 @@ public class Book {
     @NotNull
     @ManyToMany
     @JoinTable
-    private List<Author> authors;
+    private List<Authors> authors;
 
     @NotNull
     @ManyToMany

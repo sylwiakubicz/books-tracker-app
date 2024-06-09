@@ -3,6 +3,6 @@ spring:
     username: skubicz
     password: ${MORFEUSZ_PASSWORD}
     url: jdbc:sqlserver://morfeusz.wszib.edu.pl:1433;databaseName=skubicz;encrypt=false;
-  jpa:
-    hibernate:
-      ddl-auto: update
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.json
+    enabled: true

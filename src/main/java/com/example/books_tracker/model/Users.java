@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 public class Users {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     @NotNull
@@ -30,11 +30,11 @@ public class Users {
     @NotNull
     @ManyToOne
     @JoinColumn
-    private UserRole role;
+    private UserRoles role;
 
     @ManyToMany
     @JoinTable
-    private List<BookState> bookList;
+    private List<BookStates> bookList;
 
     @CreationTimestamp
     private Instant creationDate;

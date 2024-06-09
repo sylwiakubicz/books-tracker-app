@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class UserRole {
+public class UserRoles {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
 
     @NotNull

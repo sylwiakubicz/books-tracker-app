@@ -1,0 +1,64 @@
+{
+  "databaseChangeLog": [
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createAuthorsTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createGenresTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createBooksTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createBooks_AuthorsTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createBooks_GenresTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createStatusesTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createUserRolesTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createUsersTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createBookStatesTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "createUsers_BookStatesTable.xml"
+      }
+    }
+  ]
+}

@@ -3,22 +3,21 @@ package com.example.books_tracker.model;
 import jakarta.persistence.*;
 
 import java.time.Instant;
-import java.util.List;
 
 @Entity
-public class BookState {
+public class BookStates {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookStateId;
 
     @ManyToOne
     @JoinColumn
-    private Status status;
+    private Statuses status;
 
     @ManyToOne
     @JoinColumn
-    private Book book;
+    private Books book;
 
     private Integer currentPage;
 
