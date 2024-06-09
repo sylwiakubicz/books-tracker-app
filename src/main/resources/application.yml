@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    username: skubicz
+    password: ${MORFEUSZ_PASSWORD}
+    url: jdbc:sqlserver://morfeusz.wszib.edu.pl:1433;databaseName=skubicz;encrypt=false;
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
