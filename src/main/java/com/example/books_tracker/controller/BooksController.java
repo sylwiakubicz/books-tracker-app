@@ -22,10 +22,14 @@ public class BooksController {
         return booksService.list();
     }
 
+    @PostMapping
+    public Books create(@RequestBody Books books) {
+        return booksService.create(books);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         booksService.delete(id);
     }
-
 
 }
