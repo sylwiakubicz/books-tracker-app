@@ -14,4 +14,20 @@ public class Genres {
 
     @NotNull
     private String name;
+
+    public Long getGenresId() {
+        return genresId;
+    }
+
+    public void setGenresId(Long genresId) {
+        this.genresId = genresId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

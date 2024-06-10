@@ -38,4 +38,67 @@ public class Books {
     private List<Genres> genres;
 
 
+    public Long getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public byte[] getCovering() {
+        return covering;
+    }
+
+    public void setCovering(byte[] covering) {
+        this.covering = covering;
+    }
+
+    public Date getPublicationYear() {
+        return publicationYear;
+    }
+
+    public void setPublicationYear(Date publicationYear) {
+        this.publicationYear = publicationYear;
+    }
+
+    public List<Authors> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Authors> authors) {
+        this.authors = authors;
+    }
+
+    public List<Genres> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genres> genres) {
+        this.genres = genres;
+    }
 }
