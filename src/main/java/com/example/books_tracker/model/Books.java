@@ -8,33 +8,33 @@ import java.util.List;
 
 @Entity
 public class Books {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
-
     @NotNull
     private String title;
-
     @NotNull
     private String description;
-
     @NotNull
     private Integer pageNumber;
-
     private byte[] covering;
-
     @NotNull
     private Date publicationYear;
-
     @NotNull
-    @ManyToMany
-    @JoinTable
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "books_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
     private List<Authors> authors;
-
     @NotNull
-    @ManyToMany
-    @JoinTable
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "books_genres",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genres_id")
+    )
     private List<Genres> genres;
 
 
