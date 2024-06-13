@@ -9,8 +9,10 @@ import com.example.books_tracker.repository.GenresRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BooksService implements CrudService<Books, Long>{
@@ -34,33 +36,33 @@ public class BooksService implements CrudService<Books, Long>{
 
     @Override
     public Books get(Long aLong) {
-        return null;
+        return booksRepository.findById(aLong).orElseThrow(() -> new NoSuchElementException("Book not found"));
     }
 
     @Override
     @Transactional
-    public Books create(Books books) {
+    public Books create(Books book) {
         List<Authors> managedAuthors = new ArrayList<>();
-        for (Authors author : books.getAuthors()) {
+        for (Authors author : book.getAuthors()) {
             Authors managedAuthor = authorsRepository.findByNameAndSurname(author.getName(), author.getSurname())
                     .orElse(author);
             managedAuthors.add(managedAuthor);
         }
-        books.setAuthors(managedAuthors);
+        book.setAuthors(managedAuthors);
 
         List<Genres> managedGenres = new ArrayList<>();
-        for (Genres genre : books.getGenres()) {
+        for (Genres genre : book.getGenres()) {
             Genres managedGenre = genresRepository.findByName(genre.getName())
                     .orElse(genre);
             managedGenres.add(managedGenre);
         }
-        books.setGenres(managedGenres);
+        book.setGenres(managedGenres);
 
-        return booksRepository.save(books);
+        return booksRepository.save(book);
     }
 
     @Override
-    public Books update(Books books) {
+    public Books update(Books book) {
         return null;
     }
 

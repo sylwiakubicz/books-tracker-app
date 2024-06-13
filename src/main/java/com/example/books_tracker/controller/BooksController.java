@@ -22,6 +22,11 @@ public class BooksController {
         return booksService.list();
     }
 
+    @GetMapping("/{id}")
+    public Books get(@PathVariable Long id) {
+        return booksService.get(id);
+    }
+
     @PostMapping
     public Books create(@RequestBody Books books) {
         return booksService.create(books);
