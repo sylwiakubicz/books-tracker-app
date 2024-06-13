@@ -6,7 +6,9 @@ import com.example.books_tracker.model.Genres;
 import com.example.books_tracker.repository.AuthorsRepository;
 import com.example.books_tracker.repository.BooksRepository;
 import com.example.books_tracker.repository.GenresRepository;
+import com.example.books_tracker.specifications.BooksSpecifications;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 
@@ -34,6 +36,9 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.findAll();
     }
 
+    public List<Books> listBy(String title, String authorName, String authorSurname, String genre) {
+        return booksRepository.findAll(BooksSpecifications.findBooksSpecification(title, authorName, authorSurname, genre));
+    }
     @Override
     public Books get(Long aLong) {
         return booksRepository.findById(aLong).orElseThrow(() -> new NoSuchElementException("Book not found"));

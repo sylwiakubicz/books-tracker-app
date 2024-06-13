@@ -18,9 +18,14 @@ public class BooksController {
     }
 
     @GetMapping
-    public List<Books> list() {
-        return booksService.list();
+    public List<Books> list(@RequestParam(required = false) String title,
+                            @RequestParam(required = false) String authorName,
+                            @RequestParam(required = false) String authorSurname,
+                            @RequestParam(required = false) String genre) {
+
+        return booksService.listBy(title, authorName, authorSurname, genre);
     }
+
 
     @GetMapping("/{id}")
     public Books get(@PathVariable Long id) {
