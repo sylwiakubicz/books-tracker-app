@@ -15,6 +15,12 @@ public class Genres {
     @NotNull
     private String name;
 
+    public Genres() {
+    }
+
+    public Genres(String name) {
+    }
+
     public Long getGenresId() {
         return genresId;
     }

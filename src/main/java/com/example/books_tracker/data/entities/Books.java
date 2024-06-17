@@ -37,6 +37,13 @@ public class Books {
     )
     private List<Genres> genres;
 
+    public Books(String title, String description, Integer pageNumber, byte[] covering ,Date publicationYear) {
+        this.title = title;
+        this.description = description;
+        this.pageNumber = pageNumber;
+        this.covering = covering;
+        this.publicationYear = publicationYear;
+    }
 
     public Long getBookId() {
         return bookId;
