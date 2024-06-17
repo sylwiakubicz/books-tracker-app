@@ -1,4 +1,4 @@
-package com.example.books_tracker.model;
+package com.example.books_tracker.data.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

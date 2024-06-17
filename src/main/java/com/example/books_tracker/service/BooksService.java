@@ -1,14 +1,15 @@
 package com.example.books_tracker.service;
 
-import com.example.books_tracker.model.Authors;
-import com.example.books_tracker.model.Books;
-import com.example.books_tracker.model.Genres;
-import com.example.books_tracker.repository.AuthorsRepository;
-import com.example.books_tracker.repository.BooksRepository;
-import com.example.books_tracker.repository.GenresRepository;
+import com.example.books_tracker.data.entities.Authors;
+import com.example.books_tracker.data.entities.Books;
+import com.example.books_tracker.data.entities.Genres;
+import com.example.books_tracker.data.repository.AuthorsRepository;
+import com.example.books_tracker.data.repository.BooksRepository;
+import com.example.books_tracker.data.repository.GenresRepository;
 import com.example.books_tracker.specifications.BooksSpecifications;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -36,9 +37,10 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.findAll();
     }
 
-    public List<Books> listBy(String title, String authorName, String authorSurname, String genre) {
-        return booksRepository.findAll(BooksSpecifications.findBooksSpecification(title, authorName, authorSurname, genre));
+    public Page<Books> listBy(String title, String authorName, String authorSurname, String genre, Pageable pageable) {
+        return booksRepository.findAll(BooksSpecifications.findBooksSpecification(title, authorName, authorSurname, genre), pageable);
     }
+
     @Override
     public Books get(Long aLong) {
         return booksRepository.findById(aLong).orElseThrow(() -> new NoSuchElementException("Book not found"));
@@ -68,7 +70,7 @@ public class BooksService implements CrudService<Books, Long>{
 
     @Override
     public Books update(Books book) {
-        return null;
+        return booksRepository.save(book);
     }
 
     @Override

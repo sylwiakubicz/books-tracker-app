@@ -1,8 +1,8 @@
 package com.example.books_tracker.specifications;
 
-import com.example.books_tracker.model.Authors;
-import com.example.books_tracker.model.Books;
-import com.example.books_tracker.model.Genres;
+import com.example.books_tracker.data.entities.Authors;
+import com.example.books_tracker.data.entities.Books;
+import com.example.books_tracker.data.entities.Genres;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

@@ -1,4 +1,4 @@
-package com.example.books_tracker.model;
+package com.example.books_tracker.data.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
