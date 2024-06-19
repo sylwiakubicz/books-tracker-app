@@ -18,12 +18,6 @@ public class Authors {
     @NotNull
     private String surname;
 
-    public Authors() {
-    }
-
-    public Authors(String name, String surname) {
-    }
-
     public Long getAuthorId() {
         return authorId;
     }

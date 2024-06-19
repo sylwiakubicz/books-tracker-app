@@ -7,8 +7,6 @@ import com.example.books_tracker.data.repository.AuthorsRepository;
 import com.example.books_tracker.data.repository.BooksRepository;
 import com.example.books_tracker.data.repository.GenresRepository;
 import com.example.books_tracker.specifications.BooksSpecifications;
-import com.example.books_tracker.web.model.BookRequest;
-import com.example.books_tracker.web.model.BookResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class BooksService implements CrudService<Books, Long>{
@@ -49,31 +46,26 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.findById(aLong).orElseThrow(() -> new NoSuchElementException("Book not found"));
     }
 
+    @Override
     @Transactional
-    public BookResponse createBook(BookRequest bookRequest) {
-        List<Authors> authors = bookRequest.authors()
-                .stream()
-                .map(authorRequest -> authorsRepository.findByNameAndSurname(authorRequest.name(), authorRequest.surname())
-                        .orElse(new Authors(authorRequest.name(), authorRequest.surname())))
-                .toList();;
-        List<Genres> genres = bookRequest.genres()
-                .stream()
-                .map(genresRequest -> genresRepository.findByName(genresRequest.name())
-                        .orElse(new Genres(genresRequest.name())))
-                .toList();
+    public Books create(Books book) {
+        List<Authors> managedAuthors = new ArrayList<>();
+        for (Authors author : book.getAuthors()) {
+            Authors managedAuthor = authorsRepository.findByNameAndSurname(author.getName(), author.getSurname())
+                    .orElse(author);
+            managedAuthors.add(managedAuthor);
+        }
+        book.setAuthors(managedAuthors);
 
-        Books book = new Books(
-                bookRequest.title(),
-                bookRequest.description(),
-                bookRequest.pageNumber(),
-                bookRequest.covering(),
-                bookRequest.publicationYear());
+        List<Genres> managedGenres = new ArrayList<>();
+        for (Genres genre : book.getGenres()) {
+            Genres managedGenre = genresRepository.findByName(genre.getName())
+                    .orElse(genre);
+            managedGenres.add(managedGenre);
+        }
+        book.setGenres(managedGenres);
 
-        book.setAuthors(authors);
-        book.setGenres(genres);
-
-        Books savedBook = booksRepository.save(book);
-        return new BookResponse(savedBook);
+        return booksRepository.save(book);
     }
 
     @Override

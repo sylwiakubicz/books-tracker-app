@@ -2,13 +2,9 @@ package com.example.books_tracker.web.controller;
 
 import com.example.books_tracker.data.entities.Books;
 import com.example.books_tracker.service.BooksService;
-import com.example.books_tracker.web.model.BookRequest;
-import com.example.books_tracker.web.model.BookResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,9 +33,8 @@ public class BooksController {
     }
 
     @PostMapping
-    public ResponseEntity<BookResponse> create(@RequestBody BookRequest bookRequest) {
-        BookResponse response = booksService.createBook(bookRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public Books create(@RequestBody Books books) {
+        return booksService.create(books);
     }
 
     @PutMapping("/{id}")
