@@ -1,6 +1,7 @@
-package com.example.books_tracker.data.repository;
+package com.example.books_tracker.repository;
 
-import com.example.books_tracker.data.entities.Authors;
+import com.example.books_tracker.model.Authors;
+import com.example.books_tracker.model.Genres;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

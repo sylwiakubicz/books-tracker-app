@@ -1,11 +1,11 @@
-package com.example.books_tracker.web.controller;
+package com.example.books_tracker.controller;
 
-import com.example.books_tracker.data.entities.Books;
+import com.example.books_tracker.model.Books;
 import com.example.books_tracker.service.BooksService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import jakarta.persistence.GeneratedValue;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
@@ -18,12 +18,12 @@ public class BooksController {
     }
 
     @GetMapping
-    public Page<Books> list(@RequestParam(required = false) String title,
+    public List<Books> list(@RequestParam(required = false) String title,
                             @RequestParam(required = false) String authorName,
                             @RequestParam(required = false) String authorSurname,
-                            @RequestParam(required = false) String genre, @PageableDefault(size=2, sort = "id")Pageable pageable) {
+                            @RequestParam(required = false) String genre) {
 
-        return booksService.listBy(title, authorName, authorSurname, genre, pageable);
+        return booksService.listBy(title, authorName, authorSurname, genre);
     }
 
 
@@ -35,12 +35,6 @@ public class BooksController {
     @PostMapping
     public Books create(@RequestBody Books books) {
         return booksService.create(books);
-    }
-
-    @PutMapping("/{id}")
-    public Books update(@PathVariable Long id, @RequestBody Books book){
-        book.setBookId(id);
-        return booksService.update(book);
     }
 
     @DeleteMapping("/{id}")
