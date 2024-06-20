@@ -1,7 +1,6 @@
 package com.example.books_tracker.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class UserRoles {
@@ -10,7 +9,7 @@ public class UserRoles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
 
-    private String role;
+    private String name;
 
     public Long getRoleId() {
         return roleId;
@@ -20,11 +19,11 @@ public class UserRoles {
         this.roleId = roleId;
     }
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String role) {
+        this.name = role;
     }
 }
