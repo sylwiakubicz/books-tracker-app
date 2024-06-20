@@ -10,7 +10,6 @@ public class UserRoles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
 
-    @NotNull
     private String role;
 
     public Long getRoleId() {

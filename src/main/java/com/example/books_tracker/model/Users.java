@@ -2,6 +2,7 @@ package com.example.books_tracker.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,17 +15,16 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotNull
+    @NotBlank(message = "Field can not be empty")
     private String username;
 
-    @NotNull
     @Email
+    @NotBlank(message = "Field can not be empty")
     private String email;
 
-    @NotNull
+    @NotBlank(message = "Field can not be empty")
     private String password;
 
-    @NotNull
     private Boolean active;
 
     @NotNull
