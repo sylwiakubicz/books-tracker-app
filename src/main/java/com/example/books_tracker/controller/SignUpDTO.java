@@ -1,6 +1,6 @@
 package com.example.books_tracker.controller;
 
-public class AuthenticationRequest {
+public class SignUpDTO {
 
     private String username;
     private String email;

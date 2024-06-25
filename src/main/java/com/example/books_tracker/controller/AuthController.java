@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,22 +30,22 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> register(@RequestBody SignUpDTO signUpDTO) {
 
-        if (userRepository.existsByEmail(authenticationRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpDTO.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByUsername(authenticationRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpDTO.getUsername())) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        Users user = userService.createUser(authenticationRequest);
+        Users user = userService.createUser(signUpDTO);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthenticationRequest authenticationRequest) {
+    public String login(@RequestBody SignUpDTO authenticationRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
         );
