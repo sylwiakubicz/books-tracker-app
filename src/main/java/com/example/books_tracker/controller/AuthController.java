@@ -5,6 +5,8 @@ import com.example.books_tracker.repository.UserRepository;
 import com.example.books_tracker.service.CustomUserDetailsService;
 import com.example.books_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,9 +31,18 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public String register(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> register(@RequestBody AuthenticationRequest authenticationRequest) {
+
+        if (userRepository.existsByEmail(authenticationRequest.getEmail())) {
+            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userRepository.existsByUsername(authenticationRequest.getUsername())) {
+            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
+        }
+
         Users user = userService.createUser(authenticationRequest);
-        return "User: " + user + "registered successfully";
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
     @PostMapping("/login")
