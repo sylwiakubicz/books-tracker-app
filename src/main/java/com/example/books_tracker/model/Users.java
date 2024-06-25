@@ -29,11 +29,15 @@ public class Users {
 
     @NotNull
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "role_id")
     private UserRoles role;
 
-    @ManyToMany
-    @JoinTable
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_book_states",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_state_id")
+    )
     private List<BookStates> bookList;
 
     @CreationTimestamp
