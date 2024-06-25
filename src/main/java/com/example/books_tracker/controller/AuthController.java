@@ -3,6 +3,7 @@ package com.example.books_tracker.controller;
 import com.example.books_tracker.model.Users;
 import com.example.books_tracker.repository.UserRepository;
 import com.example.books_tracker.service.CustomUserDetailsService;
+import com.example.books_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,16 +23,15 @@ public class AuthController {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/register")
-    public String register(@RequestBody Users user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return "User registered successfully";
+    public String register(@RequestBody AuthenticationRequest authenticationRequest) {
+        Users user = userService.createUser(authenticationRequest);
+        return "User: " + user + "registered successfully";
     }
 
     @PostMapping("/login")
