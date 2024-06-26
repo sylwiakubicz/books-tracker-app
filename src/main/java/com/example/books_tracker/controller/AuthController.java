@@ -1,21 +1,27 @@
 package com.example.books_tracker.controller;
 
+import com.example.books_tracker.BooksTrackerApplication;
 import com.example.books_tracker.model.Users;
 import com.example.books_tracker.repository.UserRepository;
 import com.example.books_tracker.service.CustomUserDetailsService;
 import com.example.books_tracker.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthenticationManager authenticationManager;
 
@@ -48,11 +54,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody SignUpDTO authenticationRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User logged in successfully";
+    public ResponseEntity<String> login(@RequestBody SignInDTO signInDTO) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(signInDTO.getUsername(), signInDTO.getPassword())
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return ResponseEntity.ok("User logged in successfully");
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
+        }
+
     }
 }
