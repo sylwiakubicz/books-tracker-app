@@ -1,4 +1,4 @@
-package com.example.books_tracker.controller;
+package com.example.books_tracker.DTO;
 
 public class SignInDTO {
 

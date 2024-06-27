@@ -1,40 +1,16 @@
-package com.example.books_tracker.model;
+package com.example.books_tracker.DTO;
 
-import jakarta.persistence.*;
+import com.example.books_tracker.model.Statuses;
 
 import java.time.Instant;
 
-@Entity
-public class BookStates {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bookStateId;
-
-    @ManyToOne
-    @JoinColumn(name = "id")
+public class UpdateBookStateDTO {
     private Statuses status;
-
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Books book;
-
     private Integer currentPage;
-
     private Integer rate;
-
     private Instant startDate;
-
     private Instant endDate;
 
-
-    public Long getBookStateId() {
-        return bookStateId;
-    }
-
-    public void setBookStateId(Long bookStateId) {
-        this.bookStateId = bookStateId;
-    }
 
     public Statuses getStatus() {
         return status;
@@ -42,14 +18,6 @@ public class BookStates {
 
     public void setStatus(Statuses status) {
         this.status = status;
-    }
-
-    public Books getBook() {
-        return book;
-    }
-
-    public void setBook(Books book) {
-        this.book = book;
     }
 
     public Integer getCurrentPage() {

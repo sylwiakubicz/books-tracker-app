@@ -1,6 +1,6 @@
 package com.example.books_tracker.service;
 
-import com.example.books_tracker.controller.SignUpDTO;
+import com.example.books_tracker.DTO.SignUpDTO;
 import com.example.books_tracker.model.UserRoles;
 import com.example.books_tracker.model.Users;
 import com.example.books_tracker.repository.RoleRepository;
