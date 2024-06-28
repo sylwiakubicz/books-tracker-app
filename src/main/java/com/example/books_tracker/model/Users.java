@@ -32,12 +32,8 @@ public class Users {
     @JoinColumn(name = "role_id")
     private UserRoles role;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_book_states",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_state_id")
-    )
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "book_state_id")
     private List<BookStates> bookList;
 
     @CreationTimestamp

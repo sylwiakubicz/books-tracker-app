@@ -3,13 +3,19 @@ package com.example.books_tracker.model;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 public class BookStates {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_state_id")
     private Long bookStateId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users userID;
 
     @ManyToOne
     @JoinColumn(name = "id")
@@ -27,6 +33,13 @@ public class BookStates {
 
     private Instant endDate;
 
+    public Users getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Users userID) {
+        this.userID = userID;
+    }
 
     public Long getBookStateId() {
         return bookStateId;
