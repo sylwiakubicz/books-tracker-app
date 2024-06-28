@@ -8,6 +8,8 @@ import com.example.books_tracker.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -32,5 +34,23 @@ public class UserService {
         user.setRole(role);
 
         return userRepository.save(user);
+    }
+
+    public void updateUser(Long id, Users userDetails) {
+        Users user = userRepository.findByUserId(id).orElseThrow();
+        user.setUsername(userDetails.getUsername());
+        user.setEmail(userDetails.getEmail());
+        user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+        user.setRole(userDetails.getRole());
+        user.setActive(userDetails.getActive());
+        userRepository.save(user);
+    }
+
+    public List<Users> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Users getUser(Long id) {
+        return userRepository.findByUserId(id).orElseThrow();
     }
 }
