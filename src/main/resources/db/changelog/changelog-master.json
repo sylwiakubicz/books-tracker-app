@@ -71,6 +71,24 @@
         "relativeToChangelogFile": true,
         "file": "insertDataToUserRolesTable.xml"
       }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "dropUsers_BookStatesTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "addUserIdColumnToBookStatesTable.xml"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "addForeignKeyToBookStatesTable.xml"
+      }
     }
   ]
 }
