@@ -89,6 +89,12 @@
         "relativeToChangelogFile": true,
         "file": "addForeignKeyToBookStatesTable.xml"
       }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "addIsbnColumnToBooksTable.xml"
+      }
     }
   ]
 }
