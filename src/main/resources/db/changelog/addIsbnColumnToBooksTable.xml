@@ -8,7 +8,7 @@
 
     <changeSet id="addISBNColumn" author="sylwiakubicz">
         <addColumn tableName="books">
-            <column name="ISBN" type="BIGINT"/>
+            <column name="ISBN" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>

@@ -37,6 +37,16 @@ public class Books {
     )
     private List<Genres> genres;
 
+    @NotNull
+    private String ISBN;
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
 
     public Long getBookId() {
         return bookId;
