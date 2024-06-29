@@ -9,6 +9,8 @@ import com.example.books_tracker.repository.GenresRepository;
 import com.example.books_tracker.specifications.BooksSpecifications;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -36,8 +38,8 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.findAll();
     }
 
-    public List<Books> listBy(String title, String authorName, String authorSurname, String genre) {
-        return booksRepository.findAll(BooksSpecifications.findBooksSpecification(title, authorName, authorSurname, genre));
+    public Page<Books> listBy(String title, String authorName, String authorSurname, String genre, Pageable pageable) {
+        return booksRepository.findAll(BooksSpecifications.findBooksSpecification(title, authorName, authorSurname, genre), pageable);
     }
     @Override
     public Books get(Long aLong) {

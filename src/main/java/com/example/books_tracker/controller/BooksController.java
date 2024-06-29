@@ -3,6 +3,10 @@ package com.example.books_tracker.controller;
 import com.example.books_tracker.model.Books;
 import com.example.books_tracker.service.BooksService;
 import jakarta.persistence.GeneratedValue;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +22,13 @@ public class BooksController {
     }
 
     @GetMapping
-    public List<Books> list(@RequestParam(required = false) String title,
+    public Page<Books> list(@RequestParam(required = false) String title,
                             @RequestParam(required = false) String authorName,
                             @RequestParam(required = false) String authorSurname,
-                            @RequestParam(required = false) String genre) {
+                            @RequestParam(required = false) String genre,
+                            @PageableDefault @ParameterObject Pageable pageable) {
 
-        return booksService.listBy(title, authorName, authorSurname, genre);
+        return booksService.listBy(title, authorName, authorSurname, genre, pageable);
     }
 
 

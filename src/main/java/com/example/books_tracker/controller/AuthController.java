@@ -9,6 +9,10 @@ import com.example.books_tracker.service.UserService;
 import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -77,10 +81,11 @@ public class AuthController {
     }
 
     @GetMapping
-    public List<Users> getAllUsers(@RequestParam(required = false) String username,
+    public Page<Users> getAllUsers(@RequestParam(required = false) String username,
                                    @RequestParam(required = false) String email,
-                                   @RequestParam(required = false) String role) {
-        return userService.getAllUsers(username,email,role);
+                                   @RequestParam(required = false) String role,
+                                   @PageableDefault @ParameterObject Pageable pageable) {
+        return userService.getAllUsers(username,email,role, pageable);
     }
 
     @GetMapping("/{id}")
