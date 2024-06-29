@@ -18,7 +18,7 @@ public class BookStates {
     private Users userID;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "status_id")
     private Statuses status;
 
     @ManyToOne

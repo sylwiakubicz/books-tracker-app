@@ -5,6 +5,7 @@ import com.example.books_tracker.model.UserRoles;
 import com.example.books_tracker.model.Users;
 import com.example.books_tracker.repository.RoleRepository;
 import com.example.books_tracker.repository.UserRepository;
+import com.example.books_tracker.specifications.UserSpecification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +47,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<Users> getAllUsers() {
-        return userRepository.findAll();
+    public List<Users> getAllUsers(String username, String email, String role) {
+        return userRepository.findAll(UserSpecification.findUsersSpecification(username, email, role));
     }
 
     public Users getUser(Long id) {

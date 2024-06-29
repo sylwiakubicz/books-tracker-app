@@ -77,8 +77,10 @@ public class AuthController {
     }
 
     @GetMapping
-    public List<Users> getAllUsers() {
-        return userService.getAllUsers();
+    public List<Users> getAllUsers(@RequestParam(required = false) String username,
+                                   @RequestParam(required = false) String email,
+                                   @RequestParam(required = false) String role) {
+        return userService.getAllUsers(username,email,role);
     }
 
     @GetMapping("/{id}")
