@@ -17,9 +17,9 @@ public class Books {
     private String description;
     @NotNull
     private Integer pageNumber;
-    private byte[] covering;
+    private String covering;
     @NotNull
-    private Date publicationYear;
+    private Integer publicationYear;
     @NotNull
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -80,19 +80,19 @@ public class Books {
         this.pageNumber = pageNumber;
     }
 
-    public byte[] getCovering() {
+    public String getCovering() {
         return covering;
     }
 
-    public void setCovering(byte[] covering) {
+    public void setCovering(String covering) {
         this.covering = covering;
     }
 
-    public Date getPublicationYear() {
+    public Integer getPublicationYear() {
         return publicationYear;
     }
 
-    public void setPublicationYear(Date publicationYear) {
+    public void setPublicationYear(Integer publicationYear) {
         this.publicationYear = publicationYear;
     }
 
