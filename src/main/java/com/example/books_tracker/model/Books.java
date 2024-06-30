@@ -40,6 +40,9 @@ public class Books {
     @NotNull
     private String ISBN;
 
+    public Books() {
+    }
+
     public String getISBN() {
         return ISBN;
     }
