@@ -57,12 +57,6 @@
     {
       "include": {
         "relativeToChangelogFile": true,
-        "file": "createUsers_BookStatesTable.xml"
-      }
-    },
-    {
-      "include": {
-        "relativeToChangelogFile": true,
         "file": "insertDataToStatusesTable.xml"
       }
     },
@@ -70,30 +64,6 @@
       "include": {
         "relativeToChangelogFile": true,
         "file": "insertDataToUserRolesTable.xml"
-      }
-    },
-    {
-      "include": {
-        "relativeToChangelogFile": true,
-        "file": "dropUsers_BookStatesTable.xml"
-      }
-    },
-    {
-      "include": {
-        "relativeToChangelogFile": true,
-        "file": "addUserIdColumnToBookStatesTable.xml"
-      }
-    },
-    {
-      "include": {
-        "relativeToChangelogFile": true,
-        "file": "addForeignKeyToBookStatesTable.xml"
-      }
-    },
-    {
-      "include": {
-        "relativeToChangelogFile": true,
-        "file": "addIsbnColumnToBooksTable.xml"
       }
     }
   ]

@@ -20,9 +20,12 @@
             <column name="page_number" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="covering" type="BLOB"/>
-            <column name="publication_year" type="DATE">
+            <column name="covering" type="VARCHAR(255)"/>
+            <column name="publication_year" type="INT">
                 <constraints nullable="false"/>
+            </column>
+            <column name="ISBN" type="VARCHAR(255)">
+                <constraints nullable="false" />
             </column>
         </createTable>
     </changeSet>
