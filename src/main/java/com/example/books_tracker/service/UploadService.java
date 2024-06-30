@@ -31,18 +31,21 @@ public class UploadService {
         return filePath.toString();
     }
 
-    public UploadResponse uploadImageToDrive(File file) {
+    public UploadResponse uploadImageToDrive(File file, String originalFileName) {
         UploadResponse uploadResponse = new UploadResponse();
         try {
             String folderId = "1lvk3W94W7zXXYgT4Ley2JSp8BjKXgea_";
             Drive drive = createDriveService();
             com.google.api.services.drive.model.File fileMetaData = new com.google.api.services.drive.model.File();
-            fileMetaData.setName(file.getName());
+
+            String newFileName = originalFileName.replaceAll("\\s+", "_").replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
+            fileMetaData.setName(newFileName);
+
             fileMetaData.setParents(Collections.singletonList(folderId));
             FileContent mediaContent = new FileContent("image/jpg", file);
             com.google.api.services.drive.model.File uploadFile = drive.files().create(fileMetaData, mediaContent)
                     .setFields("id").execute();
-            String imageUrl = "https://drive.google.com/uc?export=view&id=" + uploadFile.getId();
+            String imageUrl = uploadFile.getId();
             file.delete();
             uploadResponse.setStatus(200);
             uploadResponse.setMessage("Image uploaded");

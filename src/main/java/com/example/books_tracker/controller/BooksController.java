@@ -68,7 +68,7 @@ public class BooksController {
         if (!file.isEmpty()) {
             File tempFile = File.createTempFile("temp", null);
             file.transferTo(tempFile);
-            UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile);
+            UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile, file.getOriginalFilename());
             books.setCovering(uploadResponse.getUrl());
         } else {
             books.setCovering(null);
@@ -84,3 +84,5 @@ public class BooksController {
     }
 
 }
+
+// "https://drive.google.com/uc?export=view&id="
