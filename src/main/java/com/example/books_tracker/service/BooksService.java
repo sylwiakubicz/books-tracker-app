@@ -67,6 +67,30 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.save(book);
     }
 
+    @Transactional
+    public Books updateBook(Books book) {
+
+        List<Authors> managedAuthors = new ArrayList<>();
+        for (Authors author : book.getAuthors()) {
+            Authors managedAuthor = authorsRepository.findByNameAndSurname(author.getName(), author.getSurname())
+                    .orElse(author);
+            managedAuthors.add(managedAuthor);
+        }
+        book.setAuthors(managedAuthors);
+
+        List<Genres> managedGenres = new ArrayList<>();
+        for (Genres genre : book.getGenres()) {
+            Genres managedGenre = genresRepository.findByName(genre.getName())
+                    .orElse(genre);
+            managedGenres.add(managedGenre);
+        }
+        book.setGenres(managedGenres);
+
+
+
+        return booksRepository.save(book);
+    }
+
     @Override
     public Books update(Books book) {
         return null;

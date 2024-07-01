@@ -78,6 +78,37 @@ public class BooksController {
         return new ResponseEntity<>("Book created successfully", HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> update(@PathVariable Long id,
+                                         @ModelAttribute Books books,
+                                         @RequestParam("image")MultipartFile file,
+                                         @RequestParam("authorsJson") String authorsJson,
+                                         @RequestParam("genresJson") String genresJson) throws IOException {
+
+        if (!booksRepository.existsBooksByBookId(id)) {
+            return new ResponseEntity<>("Book not existed", HttpStatus.NOT_FOUND);
+        }
+        books.setBookId(id);
+
+        List<Authors> authors = JsonUtils.parseAuthors(authorsJson);
+        List<Genres> genres = JsonUtils.parseGenres(genresJson);
+
+        books.setAuthors(authors);
+        books.setGenres(genres);
+
+        if (!file.isEmpty()) {
+            File tempFile = File.createTempFile("temp", null);
+            file.transferTo(tempFile);
+            UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile, file.getOriginalFilename());
+            books.setCovering(uploadResponse.getUrl());
+        } else {
+            books.setCovering(null);
+        }
+
+        booksService.updateBook(books);
+        return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         booksService.delete(id);
