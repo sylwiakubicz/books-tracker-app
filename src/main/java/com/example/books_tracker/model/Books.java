@@ -21,7 +21,7 @@ public class Books {
     @NotNull
     private Integer publicationYear;
     @NotNull
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -29,7 +29,7 @@ public class Books {
     )
     private List<Authors> authors;
     @NotNull
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "books_genres",
             joinColumns = @JoinColumn(name = "book_id"),
