@@ -48,21 +48,9 @@ public class BooksService implements CrudService<Books, Long>{
 
     @Transactional
     public Books create(Books book) {
-        List<Authors> managedAuthors = new ArrayList<>();
-        for (Authors author : book.getAuthors()) {
-            Authors managedAuthor = authorsRepository.findByNameAndSurname(author.getName(), author.getSurname())
-                    .orElse(author);
-            managedAuthors.add(managedAuthor);
-        }
-        book.setAuthors(managedAuthors);
 
-        List<Genres> managedGenres = new ArrayList<>();
-        for (Genres genre : book.getGenres()) {
-            Genres managedGenre = genresRepository.findByName(genre.getName())
-                    .orElse(genre);
-            managedGenres.add(managedGenre);
-        }
-        book.setGenres(managedGenres);
+        book.setAuthors(managedAuthors(book));
+        book.setGenres(managedGenres(book));
 
         return booksRepository.save(book);
     }
@@ -70,23 +58,8 @@ public class BooksService implements CrudService<Books, Long>{
     @Transactional
     public Books updateBook(Books book) {
 
-        List<Authors> managedAuthors = new ArrayList<>();
-        for (Authors author : book.getAuthors()) {
-            Authors managedAuthor = authorsRepository.findByNameAndSurname(author.getName(), author.getSurname())
-                    .orElse(author);
-            managedAuthors.add(managedAuthor);
-        }
-        book.setAuthors(managedAuthors);
-
-        List<Genres> managedGenres = new ArrayList<>();
-        for (Genres genre : book.getGenres()) {
-            Genres managedGenre = genresRepository.findByName(genre.getName())
-                    .orElse(genre);
-            managedGenres.add(managedGenre);
-        }
-        book.setGenres(managedGenres);
-
-
+        book.setAuthors(managedAuthors(book));
+        book.setGenres(managedGenres(book));
 
         return booksRepository.save(book);
     }
@@ -99,5 +72,25 @@ public class BooksService implements CrudService<Books, Long>{
     @Override
     public void delete(Long aLong) {
         booksRepository.deleteById(aLong);
+    }
+
+    private List<Authors> managedAuthors(Books book) {
+        List<Authors> managedAuthors = new ArrayList<>();
+        for (Authors author : book.getAuthors()) {
+            Authors managedAuthor = authorsRepository.findByNameAndSurname(author.getName(), author.getSurname())
+                    .orElse(author);
+            managedAuthors.add(managedAuthor);
+        }
+        return managedAuthors;
+    }
+
+    private List<Genres> managedGenres(Books book) {
+        List<Genres> managedGenres = new ArrayList<>();
+        for (Genres genre : book.getGenres()) {
+            Genres managedGenre = genresRepository.findByName(genre.getName())
+                    .orElse(genre);
+            managedGenres.add(managedGenre);
+        }
+        return managedGenres;
     }
 }
