@@ -10,6 +10,8 @@ import com.example.books_tracker.repository.StatusesRepository;
 import com.example.books_tracker.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 public class BookStatesService {
     private final BookStateRepository bookStateRepository;
@@ -29,11 +31,30 @@ public class BookStatesService {
         BookStates bookState = new BookStates();
         Books book = booksRepository.findById(bookId).orElseThrow();
         Statuses status = statusesRepository.findStatusesByStatusName("to read").orElseThrow();
+
         // chwilowe rozwiąznie z id użytkonika
         Users user = userRepository.findByUserId(1L).orElseThrow();
+
         bookState.setBook(book);
         bookState.setStatus(status);
         bookState.setUserID(user);
+        bookStateRepository.save(bookState);
+    }
+
+    public void addToInProgressStatus(Long bookId) {
+        BookStates bookState = new BookStates();
+        Books book = booksRepository.findById(bookId).orElseThrow();
+        Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow();
+        Instant date = Instant.now();
+
+        // chwilowe rozwiąznie z id użytkonika
+        Users user = userRepository.findByUserId(1L).orElseThrow();
+
+        bookState.setBook(book);
+        bookState.setStatus(status);
+        bookState.setUserID(user);
+        bookState.setStartDate(date);
+        bookState.setCurrentPage(0);
         bookStateRepository.save(bookState);
     }
 }
