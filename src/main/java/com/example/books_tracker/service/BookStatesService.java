@@ -39,6 +39,10 @@ public class BookStatesService {
         return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,rate), pageable);
     }
 
+    public BookStates getBookState(Long id) {
+        return bookStateRepository.findById(id).orElseThrow();
+    }
+
     public void addToToReadStatus(Long bookId) {
         BookStates bookState = new BookStates();
         Books book = booksRepository.findById(bookId).orElseThrow();

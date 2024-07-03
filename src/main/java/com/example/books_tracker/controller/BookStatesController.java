@@ -40,6 +40,12 @@ public class BookStatesController {
         return new ResponseEntity<>(userBookStates, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<BookStates> getBookState(@PathVariable Long id) {
+        BookStates bookState = bookStatesService.getBookState(id);
+        return new ResponseEntity<>(bookState, HttpStatus.OK);
+    }
+
     @PostMapping("/{book_id}")
     public ResponseEntity<String> addBookToToReadStatus(@PathVariable Long book_id) {
         bookStatesService.addToToReadStatus(book_id);
