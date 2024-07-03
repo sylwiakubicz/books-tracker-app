@@ -11,6 +11,7 @@ import com.example.books_tracker.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class BookStatesService {
@@ -56,5 +57,24 @@ public class BookStatesService {
         bookState.setStartDate(date);
         bookState.setCurrentPage(0);
         bookStateRepository.save(bookState);
+    }
+
+    public void moveBookToReadStatus(BookStates bookState, Integer rate) {
+        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow();
+        Instant endDate = Instant.now();
+
+        bookState.setStatus(status);
+        bookState.setCurrentPage(bookState.getBook().getPageNumber());
+        bookState.setEndDate(endDate);
+        bookState.setRate(rate);
+        bookStateRepository.save(bookState);
+    }
+
+    public void deleteBookState(Long id) {
+        bookStateRepository.deleteById(id);
+    }
+
+    public List<BookStates> getAll() {
+        return bookStateRepository.findAll();
     }
 }
