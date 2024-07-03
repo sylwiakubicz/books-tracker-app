@@ -1,8 +1,14 @@
 package com.example.books_tracker.controller;
 
 import com.example.books_tracker.model.BookStates;
+import com.example.books_tracker.model.Statuses;
 import com.example.books_tracker.repository.BookStateRepository;
+import com.example.books_tracker.repository.StatusesRepository;
 import com.example.books_tracker.service.BookStatesService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -17,15 +23,20 @@ public class BookStatesController {
 
     private final BookStatesService bookStatesService;
     private final BookStateRepository bookStateRepository;
+    private final StatusesRepository statusesRepository;
 
-    public BookStatesController(BookStatesService bookStatesService, BookStateRepository bookStateRepository) {
+    public BookStatesController(BookStatesService bookStatesService, BookStateRepository bookStateRepository, StatusesRepository statusesRepository) {
         this.bookStatesService = bookStatesService;
         this.bookStateRepository = bookStateRepository;
+        this.statusesRepository = statusesRepository;
     }
 
     @GetMapping
-    public ResponseEntity<List<BookStates>> getAll() {
-        List<BookStates> userBookStates = bookStatesService.getAll();
+    public ResponseEntity<Page<BookStates>> getAll(@RequestParam(required = false) String status,
+                                                   @RequestParam(required = false) Integer rate,
+                                                   @PageableDefault @ParameterObject Pageable pageable) {
+
+        Page<BookStates> userBookStates = bookStatesService.getAll(status, rate, pageable);
         return new ResponseEntity<>(userBookStates, HttpStatus.OK);
     }
 

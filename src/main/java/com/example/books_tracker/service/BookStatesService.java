@@ -8,6 +8,9 @@ import com.example.books_tracker.repository.BookStateRepository;
 import com.example.books_tracker.repository.BooksRepository;
 import com.example.books_tracker.repository.StatusesRepository;
 import com.example.books_tracker.repository.UserRepository;
+import com.example.books_tracker.specifications.BookStatesSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -26,6 +29,14 @@ public class BookStatesService {
         this.booksRepository = booksRepository;
         this.statusesRepository = statusesRepository;
         this.userRepository = userRepository;
+    }
+
+    public Page<BookStates> getAll(String status, Integer rate, Pageable pageable) {
+        Statuses statusObject = null;
+        if (status != null) {
+            statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow();
+        }
+        return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,rate), pageable);
     }
 
     public void addToToReadStatus(Long bookId) {
@@ -72,9 +83,5 @@ public class BookStatesService {
 
     public void deleteBookState(Long id) {
         bookStateRepository.deleteById(id);
-    }
-
-    public List<BookStates> getAll() {
-        return bookStateRepository.findAll();
     }
 }
