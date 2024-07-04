@@ -1,5 +1,7 @@
 package com.example.books_tracker.service;
 
+import com.example.books_tracker.DTO.AddBookToInProgressStatusDTO;
+import com.example.books_tracker.DTO.AddBookToReadStatusDTO;
 import com.example.books_tracker.model.BookStates;
 import com.example.books_tracker.model.Books;
 import com.example.books_tracker.model.Statuses;
@@ -13,13 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Service
 public class BookStatesService {
     private final BookStateRepository bookStateRepository;
-
     private final BooksRepository booksRepository;
     private final StatusesRepository statusesRepository;
     private final UserRepository userRepository;
@@ -44,12 +46,13 @@ public class BookStatesService {
     }
 
     public void addToToReadStatus(Long bookId) {
-        BookStates bookState = new BookStates();
+        // chwilowe rozwiąznie z id użytkonika
+        Users user = userRepository.findByUserId(1L).orElseThrow();
+
         Books book = booksRepository.findById(bookId).orElseThrow();
         Statuses status = statusesRepository.findStatusesByStatusName("to read").orElseThrow();
 
-        // chwilowe rozwiąznie z id użytkonika
-        Users user = userRepository.findByUserId(1L).orElseThrow();
+        BookStates bookState = new BookStates();
 
         bookState.setBook(book);
         bookState.setStatus(status);
@@ -57,35 +60,77 @@ public class BookStatesService {
         bookStateRepository.save(bookState);
     }
 
-    public void addToInProgressStatus(Long bookId) {
-        BookStates bookState = new BookStates();
+    public void addToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData) {
+        // chwilowe rozwiąznie z id użytkonika
+        Users user = userRepository.findByUserId(1L).orElseThrow();
+
         Books book = booksRepository.findById(bookId).orElseThrow();
         Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow();
-        Instant date = Instant.now();
 
+        BookStates bookState = new BookStates();
+        saveWithInProgressStatus(bookState, book, status, user, bookStatusData);
+    }
+
+    public void moveToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData) {
         // chwilowe rozwiąznie z id użytkonika
         Users user = userRepository.findByUserId(1L).orElseThrow();
 
-        bookState.setBook(book);
-        bookState.setStatus(status);
-        bookState.setUserID(user);
-        bookState.setStartDate(date);
-        bookState.setCurrentPage(0);
-        bookStateRepository.save(bookState);
+        Books book = booksRepository.findById(bookId).orElseThrow();
+        Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow();
+
+        BookStates bookState = bookStateRepository.findBookStatesByBookAndUserID(book, user).orElseThrow();
+        saveWithInProgressStatus(bookState, book, status, user, bookStatusData);
     }
 
-    public void moveBookToReadStatus(BookStates bookState, Integer rate) {
-        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow();
-        Instant endDate = Instant.now();
+    public void addBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData) {
+        // chwilowe rozwiąznie z id użytkonika
+        Users user = userRepository.findByUserId(1L).orElseThrow();
 
-        bookState.setStatus(status);
-        bookState.setCurrentPage(bookState.getBook().getPageNumber());
-        bookState.setEndDate(endDate);
-        bookState.setRate(rate);
-        bookStateRepository.save(bookState);
+        Books book = booksRepository.findById(bookId).orElseThrow();
+        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow();
+
+        BookStates bookState = new BookStates();
+        saveWithReadStatus(bookState, book, status, user, bookStatusData);
+    }
+
+    public void moveBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData) {
+        // chwilowe rozwiąznie z id użytkonika
+        Users user = userRepository.findByUserId(1L).orElseThrow();
+
+        Books book = booksRepository.findById(bookId).orElseThrow();
+        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow();
+
+        BookStates bookState = bookStateRepository.findBookStatesByBookAndUserID(book, user).orElseThrow();
+        saveWithReadStatus(bookState, book, status, user, bookStatusData);
     }
 
     public void deleteBookState(Long id) {
         bookStateRepository.deleteById(id);
+    }
+
+    private LocalDateTime fromStringToLocalDateTime(String stringDate) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+        return LocalDateTime.parse(stringDate, dateTimeFormatter);
+    }
+
+    private void saveWithInProgressStatus(BookStates bookState, Books book, Statuses status, Users user, AddBookToInProgressStatusDTO bookStatusData ) {
+        bookState.setBook(book);
+        bookState.setStatus(status);
+        bookState.setUserID(user);
+        bookState.setStartDate(fromStringToLocalDateTime(bookStatusData.getStartDate()));
+        bookState.setCurrentPage(bookStatusData.getCurrentPage());
+        bookStateRepository.save(bookState);
+    }
+
+    private void saveWithReadStatus(BookStates bookState, Books book, Statuses status, Users user, AddBookToReadStatusDTO bookStatusData ) {
+        bookState.setBook(book);
+        bookState.setStatus(status);
+        bookState.setCurrentPage(book.getPageNumber());
+        bookState.setStartDate(fromStringToLocalDateTime(bookStatusData.getStartDate()));
+        bookState.setEndDate(fromStringToLocalDateTime(bookStatusData.getEndDate()));
+        bookState.setRate(bookStatusData.getRate());
+        bookState.setUserID(user);
+        bookStateRepository.save(bookState);
     }
 }

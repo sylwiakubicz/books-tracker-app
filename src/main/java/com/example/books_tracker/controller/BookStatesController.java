@@ -1,5 +1,7 @@
 package com.example.books_tracker.controller;
 
+import com.example.books_tracker.DTO.AddBookToInProgressStatusDTO;
+import com.example.books_tracker.DTO.AddBookToReadStatusDTO;
 import com.example.books_tracker.model.BookStates;
 import com.example.books_tracker.model.Statuses;
 import com.example.books_tracker.repository.BookStateRepository;
@@ -53,25 +55,35 @@ public class BookStatesController {
     }
 
     @PostMapping("/inprogress/{book_id}")
-    public ResponseEntity<String> addBookToInProgressStatus(@PathVariable Long book_id) {
-        bookStatesService.addToInProgressStatus(book_id);
+    public ResponseEntity<String> addBookToInProgressStatus(@PathVariable Long book_id,
+                                                            @RequestBody AddBookToInProgressStatusDTO bookStatusData) {
+        bookStatesService.addToInProgressStatus(book_id, bookStatusData);
         return new ResponseEntity<>("Book added to 'in progress' status", HttpStatus.OK);
     }
 
-    @PutMapping("/{book_status_id}")
-    public ResponseEntity<String> moveBookToReadStatus(@PathVariable Long book_status_id,
-                                                       @RequestParam Integer rate) {
-        BookStates bookState = bookStateRepository.findById(book_status_id).orElseThrow();
-        if (!Objects.equals(bookState.getStatus().getStatusName(), "in progress")) {
-            return new ResponseEntity<>("Firstly add book to 'in progress' status", HttpStatus.BAD_REQUEST);
-        }
+    @PutMapping("/inprogress/{book_id}")
+    public ResponseEntity<String> moveBookToInProgressStatus(@PathVariable Long book_id,
+                                                            @RequestBody AddBookToInProgressStatusDTO bookStatusData) {
+        bookStatesService.moveToInProgressStatus(book_id, bookStatusData);
+        return new ResponseEntity<>("Book moved to 'in progress' status", HttpStatus.OK);
+    }
 
-        bookStatesService.moveBookToReadStatus(bookState, rate);
+    @PostMapping("/read/{book_id}")
+    public ResponseEntity<String> addBookToReadStatus(@PathVariable Long book_id,
+                                                       @RequestBody AddBookToReadStatusDTO bookStatusData) {
+        bookStatesService.addBookToReadStatus(book_id, bookStatusData);
         return new ResponseEntity<>("Book added to 'read' status", HttpStatus.OK);
     }
 
+    @PutMapping("/read/{book_id}")
+    public ResponseEntity<String> moveBookToReadStatus(@PathVariable Long book_id,
+                                                       @RequestBody AddBookToReadStatusDTO bookStatusData) {
+        bookStatesService.moveBookToReadStatus(book_id, bookStatusData);
+        return new ResponseEntity<>("Book moved to 'read' status", HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delteBookStatus(@PathVariable Long id) {
+    public ResponseEntity<String> deleteBookStatus(@PathVariable Long id) {
         bookStatesService.deleteBookState(id);
         return new ResponseEntity<>("Book removed corectly", HttpStatus.OK);
     }

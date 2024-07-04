@@ -3,6 +3,7 @@ package com.example.books_tracker.model;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,9 +30,9 @@ public class BookStates {
 
     private Integer rate;
 
-    private Instant startDate;
+    private LocalDateTime startDate;
 
-    private Instant endDate;
+    private LocalDateTime endDate;
 
     public Users getUserID() {
         return userID;
@@ -81,19 +82,19 @@ public class BookStates {
         this.rate = rate;
     }
 
-    public Instant getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Instant getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 }
