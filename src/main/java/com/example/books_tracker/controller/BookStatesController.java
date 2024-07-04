@@ -57,7 +57,9 @@ public class BookStatesController {
     @PostMapping("/inprogress/{book_id}")
     public ResponseEntity<String> addBookToInProgressStatus(@PathVariable Long book_id,
                                                             @RequestBody AddBookToInProgressStatusDTO bookStatusData) {
-        bookStatesService.addToInProgressStatus(book_id, bookStatusData);
+        if (Objects.equals(bookStatesService.addToInProgressStatus(book_id, bookStatusData), "exist")) {
+            return new ResponseEntity<>("Book elready in some status", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>("Book added to 'in progress' status", HttpStatus.OK);
     }
 
@@ -71,7 +73,9 @@ public class BookStatesController {
     @PostMapping("/read/{book_id}")
     public ResponseEntity<String> addBookToReadStatus(@PathVariable Long book_id,
                                                        @RequestBody AddBookToReadStatusDTO bookStatusData) {
-        bookStatesService.addBookToReadStatus(book_id, bookStatusData);
+        if (Objects.equals(bookStatesService.addBookToReadStatus(book_id, bookStatusData), "exist")) {
+            return new ResponseEntity<>("Book elready in some status", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>("Book added to 'read' status", HttpStatus.OK);
     }
 
