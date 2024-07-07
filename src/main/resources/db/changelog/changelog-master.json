@@ -65,6 +65,12 @@
         "relativeToChangelogFile": true,
         "file": "insertDataToUserRolesTable.xml"
       }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "updateForeignKeyBetweenUsersAndBookStates.xml"
+      }
     }
   ]
 }

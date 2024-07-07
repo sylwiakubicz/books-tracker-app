@@ -14,7 +14,7 @@ public class BookStates {
     @Column(name = "book_state_id")
     private Long bookStateId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users userID;
 
