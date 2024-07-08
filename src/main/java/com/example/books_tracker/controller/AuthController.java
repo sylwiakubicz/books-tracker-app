@@ -6,6 +6,8 @@ import com.example.books_tracker.model.Users;
 import com.example.books_tracker.repository.UserRepository;
 import com.example.books_tracker.service.CustomUserDetailsService;
 import com.example.books_tracker.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
@@ -14,13 +16,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,6 +37,10 @@ public class AuthController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
+    private SecurityContextRepository securityContextRepository =
+            new HttpSessionSecurityContextRepository();
+
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private final AuthenticationManager authenticationManager;
 
     private final CustomUserDetailsService userDetailsService;
@@ -61,13 +72,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody SignInDTO signInDTO) {
+    public ResponseEntity<String> login(@RequestBody SignInDTO signInDTO, HttpServletRequest request, HttpServletResponse response) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(signInDTO.getUsername(), signInDTO.getPassword())
-            );
+            UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
+                    signInDTO.getUsername(), signInDTO.getPassword());
+            Authentication authentication = authenticationManager.authenticate(token);
+            SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+            context.setAuthentication(authentication);
+            securityContextHolderStrategy.setContext(context);
+            securityContextRepository.saveContext(context, request, response);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
             return ResponseEntity.ok("User logged in successfully");
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
@@ -99,15 +113,8 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body("User deleted");
     }
 
-    @GetMapping("/current")
-    public ResponseEntity<String> getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            System.out.println("User has authorities: " + userDetails.getAuthorities());
-            return new ResponseEntity<>("corrent sprawdź console", HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>("wrong sprawdź console", HttpStatus.OK);
+    @GetMapping("/user")
+    public UserDetails getCurrentUser(@AuthenticationPrincipal User user) {
+        return user;
     }
 }
