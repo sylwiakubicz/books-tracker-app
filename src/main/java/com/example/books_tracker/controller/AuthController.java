@@ -14,11 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -95,5 +97,17 @@ public class AuthController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted");
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<String> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            System.out.println("User has authorities: " + userDetails.getAuthorities());
+            return new ResponseEntity<>("corrent sprawdź console", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("wrong sprawdź console", HttpStatus.OK);
     }
 }
