@@ -1,6 +1,5 @@
 package com.example.books_tracker.repository;
 
-import com.example.books_tracker.model.Books;
 import com.example.books_tracker.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
