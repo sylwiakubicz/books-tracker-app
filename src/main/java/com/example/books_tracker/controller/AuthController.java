@@ -56,7 +56,7 @@ public class AuthController {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        Users user = userService.createUser(signUpDTO);
+        userService.createUser(signUpDTO);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
@@ -71,9 +71,9 @@ public class AuthController {
             securityContextHolderStrategy.setContext(context);
             securityContextRepository.saveContext(context, request, response);
 
-            return ResponseEntity.ok("User logged in successfully");
+            return ResponseEntity.ok("User signed in successfully");
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username or password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong username or password");
         }
     }
 
