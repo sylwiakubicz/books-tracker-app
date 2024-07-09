@@ -3,9 +3,6 @@ package com.example.books_tracker.controller;
 import com.example.books_tracker.DTO.AddBookToInProgressStatusDTO;
 import com.example.books_tracker.DTO.AddBookToReadStatusDTO;
 import com.example.books_tracker.model.BookStates;
-import com.example.books_tracker.model.Statuses;
-import com.example.books_tracker.repository.BookStateRepository;
-import com.example.books_tracker.repository.StatusesRepository;
 import com.example.books_tracker.service.BookStatesService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -15,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
 import java.util.Objects;
 
 
@@ -24,13 +20,9 @@ import java.util.Objects;
 public class BookStatesController {
 
     private final BookStatesService bookStatesService;
-    private final BookStateRepository bookStateRepository;
-    private final StatusesRepository statusesRepository;
 
-    public BookStatesController(BookStatesService bookStatesService, BookStateRepository bookStateRepository, StatusesRepository statusesRepository) {
+    public BookStatesController(BookStatesService bookStatesService) {
         this.bookStatesService = bookStatesService;
-        this.bookStateRepository = bookStateRepository;
-        this.statusesRepository = statusesRepository;
     }
 
     @GetMapping
@@ -74,7 +66,7 @@ public class BookStatesController {
     public ResponseEntity<String> addBookToReadStatus(@PathVariable Long book_id,
                                                        @RequestBody AddBookToReadStatusDTO bookStatusData) {
         if (Objects.equals(bookStatesService.addBookToReadStatus(book_id, bookStatusData), "exist")) {
-            return new ResponseEntity<>("Book elready in some status", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Book already in some status", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Book added to 'read' status", HttpStatus.OK);
     }
@@ -89,7 +81,7 @@ public class BookStatesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBookStatus(@PathVariable Long id) {
         bookStatesService.deleteBookState(id);
-        return new ResponseEntity<>("Book removed corectly", HttpStatus.OK);
+        return new ResponseEntity<>("Book removed correctly", HttpStatus.OK);
     }
 
 }
