@@ -14,19 +14,7 @@ public class AddBookToReadStatusDTO {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
     public Integer getRate() {
         return rate;
-    }
-
-    public void setRate(Integer rate) {
-        this.rate = rate;
     }
 }
