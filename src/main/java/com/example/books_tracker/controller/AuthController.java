@@ -8,8 +8,6 @@ import com.example.books_tracker.service.CustomUserDetailsService;
 import com.example.books_tracker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,28 +28,19 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
-
-    private SecurityContextRepository securityContextRepository =
+    private final SecurityContextRepository securityContextRepository =
             new HttpSessionSecurityContextRepository();
-
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private final AuthenticationManager authenticationManager;
-
-    private final CustomUserDetailsService userDetailsService;
-
     private final UserRepository userRepository;
-
     private final UserService userService;
 
     public AuthController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, UserRepository userRepository, UserService userService) {
         this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.userService = userService;
     }
