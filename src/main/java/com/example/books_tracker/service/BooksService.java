@@ -8,7 +8,6 @@ import com.example.books_tracker.repository.BooksRepository;
 import com.example.books_tracker.repository.GenresRepository;
 import com.example.books_tracker.specifications.BooksSpecifications;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,7 @@ import java.util.NoSuchElementException;
 public class BooksService implements CrudService<Books, Long>{
 
     private final BooksRepository booksRepository;
-
     private final GenresRepository genresRepository;
-
     private final AuthorsRepository authorsRepository;
 
     public BooksService(BooksRepository booksRepository, GenresRepository genresRepository, AuthorsRepository authorsRepository) {
@@ -55,17 +52,8 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.save(book);
     }
 
-    @Transactional
-    public Books updateBook(Books book) {
-
-        book.setAuthors(managedAuthors(book));
-        book.setGenres(managedGenres(book));
-
-        return booksRepository.save(book);
-    }
-
     @Override
-    public Books update(Books book) {
+    public Books update(Books books) {
         return null;
     }
 
