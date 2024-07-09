@@ -34,11 +34,11 @@ public class BookStatesService {
     }
 
     public Page<BookStates> getAll(String status, Integer rate, Pageable pageable) {
-        Statuses statusObject = null;
         if (status != null) {
-            statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow();
+            Statuses statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow();
+            return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,rate), pageable);
         }
-        return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,rate), pageable);
+        return null;
     }
 
     public BookStates getBookState(Long id) {
