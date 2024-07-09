@@ -38,7 +38,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                         .authorizeHttpRequests(authorization -> authorization
-                                .requestMatchers("/**").permitAll()
+                                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                                .requestMatchers("/api/auth/*", "/books/*", "/books", "/bookstate/*", "/bookstate").hasRole("ADMIN")
+                                .requestMatchers("/bookstate/*", "/bookstate").hasRole("USER")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                         .logout(logout -> logout
