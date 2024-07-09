@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -20,23 +20,21 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Users createUser(SignUpDTO signUpDTO) {
+    public void createUser(SignUpDTO signUpDTO) {
         Users user = new Users();
         user.setUsername(signUpDTO.getUsername());
         user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
         user.setEmail(signUpDTO.getEmail());
         user.setActive(true);
-        UserRoles role = roleRepository.findByRole("user").orElseThrow(() -> new RuntimeException("Role not found"));
+        UserRoles role = roleRepository.findByRole("user").orElseThrow(() -> new NoSuchElementException("Role not found"));
         user.setRole(role);
-
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public void updateUser(Long id, Users userDetails) {
