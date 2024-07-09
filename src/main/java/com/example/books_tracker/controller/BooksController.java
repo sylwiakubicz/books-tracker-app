@@ -1,8 +1,7 @@
 package com.example.books_tracker.controller;
 
-import com.example.books_tracker.model.Authors;
+import com.example.books_tracker.DTO.BookData;
 import com.example.books_tracker.model.Books;
-import com.example.books_tracker.model.Genres;
 import com.example.books_tracker.model.UploadResponse;
 import com.example.books_tracker.repository.BooksRepository;
 import com.example.books_tracker.service.BooksService;
@@ -14,11 +13,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/books")
@@ -44,68 +43,28 @@ public class BooksController {
         return booksService.listBy(title, authorName, authorSurname, genre, pageable);
     }
 
-
     @GetMapping("/{id}")
     public Books get(@PathVariable Long id) {
         return booksService.get(id);
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@ModelAttribute Books books,
-                                         @RequestParam("image")MultipartFile file,
-                                         @RequestParam("authorsJson") String authorsJson,
-                                         @RequestParam("genresJson") String genresJson) throws IOException {
-        if (booksRepository.existsBooksByISBN(books.getISBN())) {
+    public ResponseEntity<String> create(@RequestBody BookData bookData) throws IOException {
+        if (booksRepository.existsBooksByISBN(bookData.getISBN())) {
             return new ResponseEntity<>("Book existed!", HttpStatus.BAD_REQUEST);
         }
-
-        List<Authors> authors = JsonUtils.parseAuthors(authorsJson);
-        List<Genres> genres = JsonUtils.parseGenres(genresJson);
-
-        books.setAuthors(authors);
-        books.setGenres(genres);
-
-        if (!file.isEmpty()) {
-            File tempFile = File.createTempFile("temp", null);
-            file.transferTo(tempFile);
-            UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile, file.getOriginalFilename());
-            books.setCovering(uploadResponse.getUrl());
-        } else {
-            books.setCovering(null);
-        }
-
-        booksService.create(books);
+        addBook(bookData, null);
         return new ResponseEntity<>("Book created successfully", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id,
-                                         @ModelAttribute Books books,
-                                         @RequestParam("image")MultipartFile file,
-                                         @RequestParam("authorsJson") String authorsJson,
-                                         @RequestParam("genresJson") String genresJson) throws IOException {
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody BookData bookData) throws IOException {
 
         if (!booksRepository.existsBooksByBookId(id)) {
             return new ResponseEntity<>("Book not existed", HttpStatus.NOT_FOUND);
         }
-        books.setBookId(id);
 
-        List<Authors> authors = JsonUtils.parseAuthors(authorsJson);
-        List<Genres> genres = JsonUtils.parseGenres(genresJson);
-
-        books.setAuthors(authors);
-        books.setGenres(genres);
-
-        if (!file.isEmpty()) {
-            File tempFile = File.createTempFile("temp", null);
-            file.transferTo(tempFile);
-            UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile, file.getOriginalFilename());
-            books.setCovering(uploadResponse.getUrl());
-        } else {
-            books.setCovering(null);
-        }
-
-        booksService.updateBook(books);
+        addBook(bookData, id);
         return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
     }
 
@@ -114,6 +73,32 @@ public class BooksController {
         booksService.delete(id);
     }
 
-}
+    private void addBook(BookData bookData, Long id) throws IOException  {
+        if (!bookData.getCovering().isEmpty()) {
+            byte[] imageBytes = Base64.getDecoder().decode(bookData.getCovering());
+            File tempFile = File.createTempFile("temp", null);
+            FileUtils.writeByteArrayToFile(tempFile, imageBytes);
+            UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile, "image.jpg");
+            bookData.setCovering(uploadResponse.getUrl());
+        }
+        else {
+            bookData.setCovering(null);
+        }
 
-// "https://drive.google.com/uc?export=view&id="
+        Books book = new Books(
+                bookData.getTitle(),
+                bookData.getDescription(),
+                bookData.getPageNumber(),
+                bookData.getCovering(),
+                bookData.getPublicationYear(),
+                bookData.getAuthor(),
+                bookData.getGenres(),
+                bookData.getISBN());
+
+        if (id != null) {
+            book.setBookId(id);
+        }
+
+        booksService.create(book);
+    }
+}
