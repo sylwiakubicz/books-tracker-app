@@ -43,6 +43,17 @@ public class Books {
     public Books() {
     }
 
+    public Books(String title, String description, Integer pageNumber, String covering, Integer publicationYear, List<Authors> authors, List<Genres> genres, String ISBN) {
+        this.title = title;
+        this.description = description;
+        this.pageNumber = pageNumber;
+        this.covering = covering;
+        this.publicationYear = publicationYear;
+        this.authors = authors;
+        this.genres = genres;
+        this.ISBN = ISBN;
+    }
+
     public String getISBN() {
         return ISBN;
     }
