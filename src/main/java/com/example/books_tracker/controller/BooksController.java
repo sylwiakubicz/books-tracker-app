@@ -34,18 +34,18 @@ public class BooksController {
     }
 
     @GetMapping
-    public Page<Books> list(@RequestParam(required = false) String title,
+    public ResponseEntity<Page<Books>> list(@RequestParam(required = false) String title,
                             @RequestParam(required = false) String authorName,
                             @RequestParam(required = false) String authorSurname,
                             @RequestParam(required = false) String genre,
                             @PageableDefault @ParameterObject Pageable pageable) {
 
-        return booksService.listBy(title, authorName, authorSurname, genre, pageable);
+        return new ResponseEntity<>(booksService.listBy(title, authorName, authorSurname, genre, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Books get(@PathVariable Long id) {
-        return booksService.get(id);
+    public ResponseEntity<Books> get(@PathVariable Long id) {
+        return new ResponseEntity<>(booksService.get(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -69,11 +69,12 @@ public class BooksController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         booksService.delete(id);
+        return new ResponseEntity<>("Book deleted", HttpStatus.OK);
     }
 
-    private void addBook(BookData bookData, Long id) throws IOException  {
+    private void addBook(BookData bookData, Long id) throws IOException {
         if (!bookData.getCovering().isEmpty()) {
             byte[] imageBytes = Base64.getDecoder().decode(bookData.getCovering());
             File tempFile = File.createTempFile("temp", null);
