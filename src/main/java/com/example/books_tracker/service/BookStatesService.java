@@ -45,9 +45,8 @@ public class BookStatesService {
         return bookStateRepository.findById(id).orElseThrow();
     }
 
-    public String addToToReadStatus(Long bookId) {
-        // chwilowe rozwiąznie z id użytkonika
-        Users user = userRepository.findByUserId(1L).orElseThrow();
+    public String addToToReadStatus(Long bookId, String username) {
+        Users user = userRepository.findByUsername(username).orElseThrow();
         if (checkIfExist(bookId, user)) {
             return "exist";
         }
@@ -64,9 +63,9 @@ public class BookStatesService {
         return "correct";
     }
 
-    public String addToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData) {
-        // chwilowe rozwiąznie z id użytkonika
-        Users user = userRepository.findByUserId(1L).orElseThrow();
+    public String addToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData, String username) {
+        Users user = userRepository.findByUsername(username).orElseThrow();
+        System.out.println("user " + user);
 
         if (checkIfExist(bookId, user)) {
             return "exist";
@@ -80,20 +79,22 @@ public class BookStatesService {
         return "correct";
     }
 
-    public void moveToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData) {
-        // chwilowe rozwiąznie z id użytkonika
-        Users user = userRepository.findByUserId(1L).orElseThrow();
-
+    public void moveToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData, String username) {
+        Users user = userRepository.findByUsername(username).orElseThrow();
+        System.out.println("user " + user);
         Books book = booksRepository.findById(bookId).orElseThrow();
+        System.out.println("book " + book);
+
         Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow();
+        System.out.println("status " + status);
+
 
         BookStates bookState = bookStateRepository.findBookStatesByBookAndUserID(book, user).orElseThrow();
         saveWithInProgressStatus(bookState, book, status, user, bookStatusData);
     }
 
-    public String addBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData) {
-        // chwilowe rozwiąznie z id użytkonika
-        Users user = userRepository.findByUserId(1L).orElseThrow();
+    public String addBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData, String username) {
+        Users user = userRepository.findByUsername(username).orElseThrow();
 
         if (checkIfExist(bookId, user)) {
             return "exist";
@@ -106,9 +107,8 @@ public class BookStatesService {
         return "correct";
     }
 
-    public void moveBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData) {
-        // chwilowe rozwiąznie z id użytkonika
-        Users user = userRepository.findByUserId(1L).orElseThrow();
+    public void moveBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData, String username) {
+        Users user = userRepository.findByUsername(username).orElseThrow();
 
         Books book = booksRepository.findById(bookId).orElseThrow();
         Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow();
