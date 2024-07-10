@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public void updateUser(Long id, Users userDetails) {
-        Users user = userRepository.findByUserId(id).orElseThrow();
+        Users user = userRepository.findByUserId(id).orElseThrow(() -> new NoSuchElementException("User not found"));
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
@@ -52,6 +52,6 @@ public class UserService {
     }
 
     public Users getUser(Long id) {
-        return userRepository.findByUserId(id).orElseThrow();
+        return userRepository.findByUserId(id).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 }

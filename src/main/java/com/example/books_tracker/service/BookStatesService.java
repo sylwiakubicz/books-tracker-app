@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 @Service
 public class BookStatesService {
@@ -35,24 +36,24 @@ public class BookStatesService {
 
     public Page<BookStates> getAll(String status, Integer rate, Pageable pageable) {
         if (status != null) {
-            Statuses statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow();
+            Statuses statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow(() -> new NoSuchElementException("Status not found"));
             return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,rate), pageable);
         }
         return null;
     }
 
     public BookStates getBookState(Long id) {
-        return bookStateRepository.findById(id).orElseThrow();
+        return bookStateRepository.findById(id).orElseThrow(() -> new NoSuchElementException("BookState not found"));
     }
 
     public String addToToReadStatus(Long bookId, String username) {
-        Users user = userRepository.findByUsername(username).orElseThrow();
+        Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
         if (checkIfExist(bookId, user)) {
             return "exist";
         }
 
-        Books book = booksRepository.findById(bookId).orElseThrow();
-        Statuses status = statusesRepository.findStatusesByStatusName("to read").orElseThrow();
+        Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Statuses status = statusesRepository.findStatusesByStatusName("to read").orElseThrow(() -> new NoSuchElementException("Status not found"));
 
         BookStates bookState = new BookStates();
 
@@ -64,15 +65,15 @@ public class BookStatesService {
     }
 
     public String addToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData, String username) {
-        Users user = userRepository.findByUsername(username).orElseThrow();
+        Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
         System.out.println("user " + user);
 
         if (checkIfExist(bookId, user)) {
             return "exist";
         }
 
-        Books book = booksRepository.findById(bookId).orElseThrow();
-        Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow();
+        Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow(() -> new NoSuchElementException("Status not found"));
 
         BookStates bookState = new BookStates();
         saveWithInProgressStatus(bookState, book, status, user, bookStatusData);
@@ -80,27 +81,23 @@ public class BookStatesService {
     }
 
     public void moveToInProgressStatus(Long bookId, AddBookToInProgressStatusDTO bookStatusData, String username) {
-        Users user = userRepository.findByUsername(username).orElseThrow();
-        System.out.println("user " + user);
-        Books book = booksRepository.findById(bookId).orElseThrow();
-        System.out.println("book " + book);
+        Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
 
-        Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow();
-        System.out.println("status " + status);
+        Statuses status = statusesRepository.findStatusesByStatusName("in progress").orElseThrow(() -> new NoSuchElementException("Status not found"));
 
-
-        BookStates bookState = bookStateRepository.findBookStatesByBookAndUserID(book, user).orElseThrow();
+        BookStates bookState = bookStateRepository.findBookStatesByBookAndUserID(book, user).orElseThrow(() -> new NoSuchElementException("BookStatus not found"));
         saveWithInProgressStatus(bookState, book, status, user, bookStatusData);
     }
 
     public String addBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData, String username) {
-        Users user = userRepository.findByUsername(username).orElseThrow();
+        Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
 
         if (checkIfExist(bookId, user)) {
             return "exist";
         }
-        Books book = booksRepository.findById(bookId).orElseThrow();
-        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow();
+        Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow(() -> new NoSuchElementException("Status not found"));
 
         BookStates bookState = new BookStates();
         saveWithReadStatus(bookState, book, status, user, bookStatusData);
@@ -108,12 +105,12 @@ public class BookStatesService {
     }
 
     public void moveBookToReadStatus(Long bookId, AddBookToReadStatusDTO bookStatusData, String username) {
-        Users user = userRepository.findByUsername(username).orElseThrow();
+        Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        Books book = booksRepository.findById(bookId).orElseThrow();
-        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow();
+        Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Statuses status = statusesRepository.findStatusesByStatusName("read").orElseThrow(() -> new NoSuchElementException("Status not found"));
 
-        BookStates bookState = bookStateRepository.findBookStatesByBookAndUserID(book, user).orElseThrow();
+        BookStates bookState = bookStateRepository.findBookStatesByBookAndUserID(book, user).orElseThrow(() -> new NoSuchElementException("BookState not found"));
         saveWithReadStatus(bookState, book, status, user, bookStatusData);
     }
 
