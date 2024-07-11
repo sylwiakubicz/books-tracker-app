@@ -32,7 +32,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
         user.setEmail(signUpDTO.getEmail());
         user.setActive(true);
-        UserRoles role = roleRepository.findByRole("user").orElseThrow(() -> new NoSuchElementException("Role not found"));
+        UserRoles role = roleRepository.findByRole("ROLE_USER").orElseThrow(() -> new NoSuchElementException("Role not found"));
         user.setRole(role);
         userRepository.save(user);
     }
