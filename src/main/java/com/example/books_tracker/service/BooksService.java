@@ -52,6 +52,15 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.save(book);
     }
 
+    @Transactional
+    public Books updateBook(Books book) {
+
+        book.setAuthors(managedAuthors(book));
+        book.setGenres(managedGenres(book));
+
+        return booksRepository.save(book);
+    }
+
     @Override
     public Books update(Books books) {
         return null;
