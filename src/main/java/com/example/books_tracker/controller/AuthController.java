@@ -28,6 +28,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -49,15 +51,15 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody SignUpDTO signUpDTO) {
 
         if (userRepository.existsByEmail(signUpDTO.getEmail())) {
-            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("message", "Email is already taken!"), HttpStatus.BAD_REQUEST);
         }
 
         if (userRepository.existsByUsername(signUpDTO.getUsername())) {
-            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("message", "Username is already taken!"), HttpStatus.BAD_REQUEST);
         }
 
         userService.createUser(signUpDTO);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "User registered successfully"), HttpStatus.OK);
     }
 
     @PostMapping("/login")
