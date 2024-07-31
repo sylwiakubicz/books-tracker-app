@@ -15,19 +15,14 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotBlank(message = "Field can not be empty")
     private String username;
 
-    @Email
-    @NotBlank(message = "Field can not be empty")
     private String email;
 
-    @NotBlank(message = "Field can not be empty")
     private String password;
 
     private Boolean active;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "role_id")
     private UserRoles role;
