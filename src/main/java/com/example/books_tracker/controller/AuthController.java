@@ -8,6 +8,7 @@ import com.example.books_tracker.service.CustomUserDetailsService;
 import com.example.books_tracker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +27,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -48,14 +52,21 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody SignUpDTO signUpDTO) {
+    public ResponseEntity<?> register(@Valid @RequestBody SignUpDTO signUpDTO, BindingResult bindingResult) throws UserAlreadyExistsException {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getFieldErrors().stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return new ResponseEntity<>(Map.of("message", errorMessage), HttpStatus.BAD_REQUEST);
+        }
+
 
         if (userRepository.existsByEmail(signUpDTO.getEmail())) {
-            return new ResponseEntity<>(Map.of("message", "Email is already taken!"), HttpStatus.BAD_REQUEST);
+            throw new UserAlreadyExistsException("Email is already taken!");
         }
 
         if (userRepository.existsByUsername(signUpDTO.getUsername())) {
-            return new ResponseEntity<>(Map.of("message", "Username is already taken!"), HttpStatus.BAD_REQUEST);
+            throw new UserAlreadyExistsException("Username is already taken!");
         }
 
         userService.createUser(signUpDTO);
