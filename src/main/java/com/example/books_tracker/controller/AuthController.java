@@ -60,7 +60,6 @@ public class AuthController {
             return new ResponseEntity<>(Map.of("message", errorMessage), HttpStatus.BAD_REQUEST);
         }
 
-
         if (userRepository.existsByEmail(signUpDTO.getEmail())) {
             throw new UserAlreadyExistsException("Email is already taken!");
         }
@@ -74,20 +73,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody SignInDTO signInDTO, HttpServletRequest request, HttpServletResponse response) {
-        try {
-            UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
-                    signInDTO.getUsername(), signInDTO.getPassword());
-            Authentication authentication = authenticationManager.authenticate(token);
-            SecurityContext context = securityContextHolderStrategy.createEmptyContext();
-            context.setAuthentication(authentication);
-            securityContextHolderStrategy.setContext(context);
-            securityContextRepository.saveContext(context, request, response);
+    public ResponseEntity<Map<String, String>> login(@RequestBody SignInDTO signInDTO, HttpServletRequest request, HttpServletResponse response) {
+        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
+                signInDTO.getUsername(), signInDTO.getPassword());
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+        context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
 
-            return ResponseEntity.ok("User signed in successfully");
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong username or password");
-        }
+        return new ResponseEntity<>(Map.of("message", "User signed in successfully"), HttpStatus.OK);
     }
 
     @PutMapping("/update/user/{id}")

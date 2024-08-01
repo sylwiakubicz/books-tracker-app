@@ -3,6 +3,7 @@ package com.example.books_tracker.controller;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,6 +34,11 @@ public class GlobalExceptionHandler {
                 .map(violation -> violation.getMessage())
                 .collect(Collectors.joining(", "));
         return new ResponseEntity<>(Map.of("message", errorMessage), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
+        return new ResponseEntity<>(Map.of("message", "Wrong username or password"), HttpStatus.BAD_REQUEST);
     }
 
 }
