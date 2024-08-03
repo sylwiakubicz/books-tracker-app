@@ -1,5 +1,7 @@
 package com.example.books_tracker.config;
 
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -37,19 +39,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                        .authorizeHttpRequests(authorization -> authorization
-                                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                                .requestMatchers("/bookstate/*", "/bookstate").hasRole("USER")
-                                .requestMatchers("/api/auth/*", "/books/*", "/books").hasRole("ADMIN")
-                                .anyRequest().authenticated())
+                .authorizeHttpRequests(authorization -> authorization
+                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/bookstate/*", "/bookstate", "/books/get/*", "/books/get").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/auth/*", "/books/*").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                        .logout(logout -> logout
-                                .logoutUrl("/api/auth/logout")
-                                .logoutSuccessUrl("/login")
-                                .invalidateHttpSession(true)
-                                .deleteCookies("JSESSIONID")
-                                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                                .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                        .permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
@@ -57,7 +59,16 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setSameSite("None");
+        serializer.setUseSecureCookie(true);
+        return serializer;
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
