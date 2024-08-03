@@ -34,7 +34,7 @@ public class BooksController {
         this.uploadService = uploadService;
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<Page<Books>> list(@RequestParam(required = false) String title,
                             @RequestParam(required = false) String authorName,
                             @RequestParam(required = false) String authorSurname,
@@ -44,7 +44,7 @@ public class BooksController {
         return new ResponseEntity<>(booksService.listBy(title, authorName, authorSurname, genre, pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Books> get(@PathVariable Long id) {
         return new ResponseEntity<>(booksService.get(id), HttpStatus.OK);
     }
