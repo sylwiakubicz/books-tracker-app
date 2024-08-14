@@ -37,9 +37,15 @@ public class BookStatesService {
     public Page<BookStates> getAll(String status, Integer rate, Pageable pageable) {
         if (status != null) {
             Statuses statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow(() -> new NoSuchElementException("Status not found"));
-            return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,rate), pageable);
+            if (rate != null) {
+                return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,rate), pageable);
+            }
+            return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(statusObject,null), pageable);
+        } else if (rate != null) {
+            return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(null, rate), pageable);
+        } else {
+            return bookStateRepository.findAll(pageable);
         }
-        return null;
     }
 
     public BookStates getBookState(Long id) {
