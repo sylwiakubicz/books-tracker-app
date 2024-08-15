@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -153,7 +154,17 @@ public class BookStatesService {
         bookStateRepository.save(bookState);
     }
 
-    private Boolean checkIfExist(Long book_id, Users user) {
-        return bookStateRepository.existsBookStatesByBook_BookIdAndUserID(book_id,user);
+    public Boolean checkIfExist(Long book_id, Users user) {
+        return bookStateRepository.existsByBook_BookIdAndUserID_UserId(book_id,user.getUserId());
+    }
+
+    public BookStates checkIfExistAndGet(Long book_id, Users user) {
+        Boolean existBook = checkIfExist(book_id, user);
+        if (existBook) {
+            Books book = booksRepository.findById(book_id).orElseThrow(() -> new NoSuchElementException("Book not found"));
+            BookStates bookStates = bookStateRepository.findByBook_BookIdAndUserID_UserId(book_id, user.getUserId()).orElseThrow(() -> new NoSuchElementException("BookState not found"));
+            return bookStates;
+        }
+        return null;
     }
 }

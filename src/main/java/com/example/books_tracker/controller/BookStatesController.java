@@ -3,7 +3,10 @@ package com.example.books_tracker.controller;
 import com.example.books_tracker.DTO.AddBookToInProgressStatusDTO;
 import com.example.books_tracker.DTO.AddBookToReadStatusDTO;
 import com.example.books_tracker.model.BookStates;
+import com.example.books_tracker.model.Users;
+import com.example.books_tracker.repository.UserRepository;
 import com.example.books_tracker.service.BookStatesService;
+import com.example.books_tracker.service.UserService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -23,9 +27,13 @@ import java.util.Objects;
 public class BookStatesController {
 
     private final BookStatesService bookStatesService;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public BookStatesController(BookStatesService bookStatesService) {
+    public BookStatesController(BookStatesService bookStatesService, UserService userService, UserRepository userRepository) {
         this.bookStatesService = bookStatesService;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -45,6 +53,13 @@ public class BookStatesController {
             return new ResponseEntity<>(bookState, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/exist/{book_id}")
+    public ResponseEntity<BookStates> existBook(@PathVariable Long book_id, @AuthenticationPrincipal User user) {
+        Users userObj = userRepository.findByUsername(user.getUsername()).orElse(null);
+        BookStates bookState = bookStatesService.checkIfExistAndGet(book_id, userObj);
+        return new ResponseEntity<>(bookState, HttpStatus.OK);
     }
 
     @PostMapping("/{book_id}")
