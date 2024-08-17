@@ -11,7 +11,7 @@
         <insert tableName="users">
             <column name="username" value="adminUser"/>
             <column name="email" value="admin@example.com"/>
-            <column name="password" value="$2a$10$sOpJvcTcvD/QbX0qv4R9jOK5Fc/zBR/jRQjoiPZJZbMaF/3z6UpT."/>
+            <column name="password" value="$2a$10$aZfvMMBGT59SO9oU9rNJGOkjZSYsSUgAxmlncRs3XSG6A5QbxDTHC"/>
             <column name="active" valueBoolean="true"/>
             <column name="role_id" value="1"/>
             <column name="creation_date" valueDate="2024-08-17T00:00:00"/>
@@ -21,7 +21,7 @@
         <insert tableName="users">
             <column name="username" value="regularUser"/>
             <column name="email" value="user@example.com"/>
-            <column name="password" value="$2a$10$DOWCUGe7De6eF6Z7BJK4zuStIV.4kIY9b8n5FlKBxC8mrpV0WJ8b2"/>
+            <column name="password" value="$2a$10$Gt4dtC/PggK4/SE0EEgynO61VtBkIouh3womDcJFB8M784q6a4HrO"/>
             <column name="active" valueBoolean="true"/>
             <column name="role_id" value="2"/>
             <column name="creation_date" valueDate="2024-08-17T00:00:00"/>
