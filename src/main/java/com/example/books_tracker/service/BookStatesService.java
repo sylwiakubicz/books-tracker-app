@@ -57,10 +57,11 @@ public class BookStatesService {
 
     public BookStates addToStatus(Long bookId, String username, AddOrUpdateBookStateDTO stateData) {
         Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        BookStates bookState = new BookStates();
+
         Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
         Statuses status = statusesRepository.findStatusesByStatusName(stateData.getStatus()).orElseThrow(() -> new NoSuchElementException("Status not found"));
 
-        BookStates bookState = new BookStates();
         bookState.setBook(book);
         bookState.setUserID(user);
         bookState.setStatus(status);
@@ -90,6 +91,43 @@ public class BookStatesService {
         bookStateRepository.save(bookState);
         return bookState;
    }
+
+    public BookStates updateToStatus(Long bookId, String username, AddOrUpdateBookStateDTO stateData) {
+        Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        BookStates bookState = bookStateRepository.findByBook_BookIdAndUserID_UserId(bookId, user.getUserId()).orElseThrow(() -> new NoSuchElementException("BookState not found"));
+
+        Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Statuses status = statusesRepository.findStatusesByStatusName(stateData.getStatus()).orElseThrow(() -> new NoSuchElementException("Status not found"));
+
+        bookState.setBook(book);
+        bookState.setUserID(user);
+        bookState.setStatus(status);
+
+        if (status.getId() == 1) {
+            bookState.setStartDate(null);
+            bookState.setCurrentPage(null);
+            bookState.setEndDate(null);
+            bookState.setRate(null);
+        } else if (status.getId() == 2) {
+            bookState.setStartDate(fromStringToLocalDateTime(stateData.getStartDate()));
+            if (bookState.getCurrentPage() == null) {
+                bookState.setCurrentPage(0);
+            } else {
+                bookState.setCurrentPage(stateData.getCurrentPage());
+            }
+            bookState.setEndDate(null);
+            bookState.setRate(null);
+        }
+        else {
+            bookState.setStartDate(fromStringToLocalDateTime(stateData.getStartDate()));
+            bookState.setCurrentPage(book.getPageNumber());
+            bookState.setEndDate(fromStringToLocalDateTime(stateData.getEndDate()));
+            bookState.setRate(stateData.getRate());
+        }
+
+        bookStateRepository.save(bookState);
+        return bookState;
+    }
 
     private LocalDateTime fromStringToLocalDateTime(String stringDate) {
         if (stringDate == null) {

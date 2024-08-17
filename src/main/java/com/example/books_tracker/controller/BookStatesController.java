@@ -71,7 +71,7 @@ public class BookStatesController {
 
     @PutMapping("/update/{book_id}")
     public ResponseEntity<BookStates> updateBookState(@PathVariable Long book_id, @RequestBody AddOrUpdateBookStateDTO stateData, @AuthenticationPrincipal User user) {
-        BookStates bookState = bookStatesService.addToStatus(book_id, user.getUsername(), stateData);
+        BookStates bookState = bookStatesService.updateToStatus(book_id, user.getUsername(), stateData);
         return new ResponseEntity<>(bookState, HttpStatus.OK);
     }
 
