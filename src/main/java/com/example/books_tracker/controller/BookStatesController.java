@@ -2,6 +2,7 @@ package com.example.books_tracker.controller;
 
 import com.example.books_tracker.DTO.AddBookToInProgressStatusDTO;
 import com.example.books_tracker.DTO.AddBookToReadStatusDTO;
+import com.example.books_tracker.DTO.AddOrUpdateBookStateDTO;
 import com.example.books_tracker.model.BookStates;
 import com.example.books_tracker.model.Users;
 import com.example.books_tracker.repository.UserRepository;
@@ -62,6 +63,33 @@ public class BookStatesController {
         return new ResponseEntity<>(bookState, HttpStatus.OK);
     }
 
+    @PostMapping("/create/{book_id}")
+    public ResponseEntity<BookStates> createBookState(@PathVariable Long book_id, @RequestBody AddOrUpdateBookStateDTO stateData, @AuthenticationPrincipal User user) {
+        BookStates bookState = bookStatesService.addToStatus(book_id, user.getUsername(), stateData);
+        return new ResponseEntity<>(bookState, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{book_id}")
+    public ResponseEntity<BookStates> updateBookState(@PathVariable Long book_id, @RequestBody AddOrUpdateBookStateDTO stateData, @AuthenticationPrincipal User user) {
+        BookStates bookState = bookStatesService.addToStatus(book_id, user.getUsername(), stateData);
+        return new ResponseEntity<>(bookState, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBookStatus(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        if (user.getUsername().equals(bookStatesService.getBookState(id).getUserID().getUsername())) {
+            bookStatesService.deleteBookState(id);
+            return new ResponseEntity<>("Book removed correctly", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Not permitted to delete this entity", HttpStatus.BAD_REQUEST);
+    }
+
+
+
+
+
+
+//    DO USUNIĘCIA
     @PostMapping("/{book_id}")
     public ResponseEntity<String> addBookToToReadStatus(@PathVariable Long book_id, @AuthenticationPrincipal User user) {
         bookStatesService.addToToReadStatus(book_id, user.getUsername());
@@ -104,13 +132,6 @@ public class BookStatesController {
         return new ResponseEntity<>("Book moved to 'read' status", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBookStatus(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        if (user.getUsername().equals(bookStatesService.getBookState(id).getUserID().getUsername())) {
-            bookStatesService.deleteBookState(id);
-            return new ResponseEntity<>("Book removed correctly", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Not permitted to delte this entity", HttpStatus.BAD_REQUEST);
-    }
+
 
 }
