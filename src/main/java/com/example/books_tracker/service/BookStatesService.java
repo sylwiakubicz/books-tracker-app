@@ -2,6 +2,7 @@ package com.example.books_tracker.service;
 
 import com.example.books_tracker.DTO.AddBookToInProgressStatusDTO;
 import com.example.books_tracker.DTO.AddBookToReadStatusDTO;
+import com.example.books_tracker.DTO.AddOrUpdateBookStateDTO;
 import com.example.books_tracker.model.BookStates;
 import com.example.books_tracker.model.Books;
 import com.example.books_tracker.model.Statuses;
@@ -54,6 +55,74 @@ public class BookStatesService {
         return bookStateRepository.findById(id).orElseThrow(() -> new NoSuchElementException("BookState not found"));
     }
 
+    public BookStates addToStatus(Long bookId, String username, AddOrUpdateBookStateDTO stateData) {
+        Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        Books book = booksRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
+        Statuses status = statusesRepository.findStatusesByStatusName(stateData.getStatus()).orElseThrow(() -> new NoSuchElementException("Status not found"));
+
+        BookStates bookState = new BookStates();
+        bookState.setBook(book);
+        bookState.setUserID(user);
+        bookState.setStatus(status);
+
+        if (status.getId() == 1) {
+            bookState.setStartDate(null);
+            bookState.setCurrentPage(null);
+            bookState.setEndDate(null);
+            bookState.setRate(null);
+        } else if (status.getId() == 2) {
+            bookState.setStartDate(fromStringToLocalDateTime(stateData.getStartDate()));
+            if (bookState.getCurrentPage() == null) {
+                bookState.setCurrentPage(0);
+            } else {
+                bookState.setCurrentPage(stateData.getCurrentPage());
+            }
+            bookState.setEndDate(null);
+            bookState.setRate(null);
+        }
+        else {
+            bookState.setStartDate(fromStringToLocalDateTime(stateData.getStartDate()));
+            bookState.setCurrentPage(book.getPageNumber());
+            bookState.setEndDate(fromStringToLocalDateTime(stateData.getEndDate()));
+            bookState.setRate(stateData.getRate());
+        }
+
+        bookStateRepository.save(bookState);
+        return bookState;
+   }
+
+    private LocalDateTime fromStringToLocalDateTime(String stringDate) {
+        if (stringDate == null) {
+            return LocalDateTime.now();
+        }
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+        return LocalDateTime.parse(stringDate, dateTimeFormatter);
+    }
+
+    public void deleteBookState(Long id) {
+        bookStateRepository.deleteById(id);
+    }
+
+    public Boolean checkIfExist(Long book_id, Users user) {
+        return bookStateRepository.existsByBook_BookIdAndUserID_UserId(book_id,user.getUserId());
+    }
+
+    public BookStates checkIfExistAndGet(Long book_id, Users user) {
+        Boolean existBook = checkIfExist(book_id, user);
+        if (existBook) {
+            Books book = booksRepository.findById(book_id).orElseThrow(() -> new NoSuchElementException("Book not found"));
+            BookStates bookStates = bookStateRepository.findByBook_BookIdAndUserID_UserId(book_id, user.getUserId()).orElseThrow(() -> new NoSuchElementException("BookState not found"));
+            return bookStates;
+        }
+        return null;
+    }
+
+
+
+
+
+//    DO USUNIĘCIA
     public String addToToReadStatus(Long bookId, String username) {
         Users user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
         if (checkIfExist(bookId, user)) {
@@ -122,16 +191,6 @@ public class BookStatesService {
         saveWithReadStatus(bookState, book, status, user, bookStatusData);
     }
 
-    public void deleteBookState(Long id) {
-        bookStateRepository.deleteById(id);
-    }
-
-    private LocalDateTime fromStringToLocalDateTime(String stringDate) {
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
-        return LocalDateTime.parse(stringDate, dateTimeFormatter);
-    }
-
     private void saveWithInProgressStatus(BookStates bookState, Books book, Statuses status, Users user, AddBookToInProgressStatusDTO bookStatusData ) {
         bookState.setBook(book);
         bookState.setStatus(status);
@@ -154,17 +213,5 @@ public class BookStatesService {
         bookStateRepository.save(bookState);
     }
 
-    public Boolean checkIfExist(Long book_id, Users user) {
-        return bookStateRepository.existsByBook_BookIdAndUserID_UserId(book_id,user.getUserId());
-    }
 
-    public BookStates checkIfExistAndGet(Long book_id, Users user) {
-        Boolean existBook = checkIfExist(book_id, user);
-        if (existBook) {
-            Books book = booksRepository.findById(book_id).orElseThrow(() -> new NoSuchElementException("Book not found"));
-            BookStates bookStates = bookStateRepository.findByBook_BookIdAndUserID_UserId(book_id, user.getUserId()).orElseThrow(() -> new NoSuchElementException("BookState not found"));
-            return bookStates;
-        }
-        return null;
-    }
 }
