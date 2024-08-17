@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="addInitialUsers" author="sylwiakubicz">
+        <!-- Dodanie użytkownika z rolą 'admin' -->
+        <insert tableName="users">
+            <column name="username" value="adminUser"/>
+            <column name="email" value="admin@example.com"/>
+            <column name="password" value="$2a$10$sOpJvcTcvD/QbX0qv4R9jOK5Fc/zBR/jRQjoiPZJZbMaF/3z6UpT."/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role_id" value="1"/>
+            <column name="creation_date" valueDate="2024-08-17T00:00:00"/>
+        </insert>
+
+        <!-- Dodanie użytkownika z rolą 'user' -->
+        <insert tableName="users">
+            <column name="username" value="regularUser"/>
+            <column name="email" value="user@example.com"/>
+            <column name="password" value="$2a$10$DOWCUGe7De6eF6Z7BJK4zuStIV.4kIY9b8n5FlKBxC8mrpV0WJ8b2"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role_id" value="2"/>
+            <column name="creation_date" valueDate="2024-08-17T00:00:00"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

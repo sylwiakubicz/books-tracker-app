@@ -71,6 +71,12 @@
         "relativeToChangelogFile": true,
         "file": "updateForeignKeyBetweenUsersAndBookStates.xml"
       }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "addUsersWithAdminAndUserRoles.xml"
+      }
     }
   ]
 }
