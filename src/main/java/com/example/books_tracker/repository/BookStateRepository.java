@@ -10,7 +10,6 @@ import java.util.Optional;
 
 
 public interface BookStateRepository extends JpaRepository<BookStates, Long>, JpaSpecificationExecutor<BookStates> {
-    Boolean existsBookStatesByBook_BookIdAndUserID(Long bookId, Users user);
     Optional<BookStates> findBookStatesByBookAndUserID(Books book, Users user);
 
     Boolean existsByBook_BookIdAndUserID_UserId(Long bookId, Long userId);

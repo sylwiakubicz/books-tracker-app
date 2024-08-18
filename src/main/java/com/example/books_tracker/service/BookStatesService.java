@@ -149,7 +149,6 @@ public class BookStatesService {
     public BookStates checkIfExistAndGet(Long book_id, Users user) {
         Boolean existBook = checkIfExist(book_id, user);
         if (existBook) {
-            Books book = booksRepository.findById(book_id).orElseThrow(() -> new NoSuchElementException("Book not found"));
             BookStates bookStates = bookStateRepository.findByBook_BookIdAndUserID_UserId(book_id, user.getUserId()).orElseThrow(() -> new NoSuchElementException("BookState not found"));
             return bookStates;
         }

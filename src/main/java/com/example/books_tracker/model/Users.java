@@ -1,5 +1,6 @@
 package com.example.books_tracker.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ public class Users {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_state_id")
+    @JsonManagedReference
     private List<BookStates> bookList;
 
     @CreationTimestamp
