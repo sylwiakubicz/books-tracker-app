@@ -13,11 +13,13 @@ import com.example.books_tracker.specifications.BookStatesSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class BookStatesService {
@@ -133,8 +135,17 @@ public class BookStatesService {
         return LocalDateTime.parse(stringDate, dateTimeFormatter);
     }
 
-    public void deleteBookState(Long id) {
-        bookStateRepository.deleteById(id);
+    @Transactional
+    public boolean deleteBookState(Long userId, Long bookId) {
+            BookStates bookState = bookStateRepository.findByBook_BookIdAndUserID_UserId(bookId, userId)
+                .orElse(null);
+            Long userIdFromBookState = bookState.getUserID().getUserId();
+
+        if (bookState != null && Objects.equals(userIdFromBookState, userId)) {
+            bookStateRepository.deleteByUserID_UserIdAndBook_BookId(userId, bookId);
+            return true;
+        }
+        return false;
     }
 
     public Boolean checkIfExist(Long book_id, Users user) {

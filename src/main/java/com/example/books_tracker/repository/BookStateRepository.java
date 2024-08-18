@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface BookStateRepository extends JpaRepository<BookStates, Long>, JpaSpecificationExecutor<BookStates> {
     Boolean existsByBook_BookIdAndUserID_UserId(Long bookId, Long userId);
     Optional<BookStates> findByBook_BookIdAndUserID_UserId(Long bookId, Long userId);
+
+    void deleteByUserID_UserIdAndBook_BookId(Long userId, Long bookId);
 }

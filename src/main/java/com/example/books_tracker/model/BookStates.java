@@ -12,7 +12,7 @@ public class BookStates {
     @Column(name = "book_state_id")
     private Long bookStateId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private Users userID;
