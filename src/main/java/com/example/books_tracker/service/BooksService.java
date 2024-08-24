@@ -8,6 +8,7 @@ import com.example.books_tracker.repository.BooksRepository;
 import com.example.books_tracker.repository.GenresRepository;
 import com.example.books_tracker.specifications.BooksSpecifications;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 @Service
 public class BooksService implements CrudService<Books, Long>{
@@ -33,6 +37,30 @@ public class BooksService implements CrudService<Books, Long>{
     @Override
     public List<Books> list() {
         return booksRepository.findAll();
+    }
+
+    @Cacheable(value = "randomBooksCache", key = "T(java.time.LocalDate).now().toString()")
+    public List<Books> randomBookList(int limit) {
+        Long minId = booksRepository.findMinId();
+        Long maxId = booksRepository.findMaxId();
+
+        if (minId == null || maxId == null || minId.equals(maxId)) {
+            return List.of();
+        }
+
+        List<Long> randomIds = getRandomIds(limit * 2, minId, maxId);
+        List<Books> randomBooks = booksRepository.findByIds(randomIds);
+
+        if (randomBooks.size() > limit) {
+            Random random = new Random();
+            return random.ints(0, randomBooks.size())
+                    .distinct()
+                    .limit(limit)
+                    .mapToObj(randomBooks::get)
+                    .collect(Collectors.toList());
+        }
+
+        return randomBooks;
     }
 
     public Page<Books> listBy(String title, String authorName, String authorSurname, String genre, Pageable pageable) {
@@ -89,5 +117,14 @@ public class BooksService implements CrudService<Books, Long>{
             managedGenres.add(managedGenre);
         }
         return managedGenres;
+    }
+
+    private List<Long> getRandomIds(int count, Long minId, Long maxId) {
+        Random random = new Random();
+        return LongStream.generate(() -> minId + (long) (random.nextDouble() * (maxId - minId + 1)))
+                .distinct()
+                .limit(count)
+                .boxed()
+                .collect(Collectors.toList());
     }
 }
