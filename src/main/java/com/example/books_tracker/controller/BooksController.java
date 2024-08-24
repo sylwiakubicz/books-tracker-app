@@ -44,6 +44,11 @@ public class BooksController {
         return new ResponseEntity<>(booksService.listBy(title, authorName, authorSurname, genre, pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/get/random")
+    public ResponseEntity<List<Books>> getRandom() {
+        return new ResponseEntity<>(booksService.randomBookList(10), HttpStatus.OK);
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<Books> get(@PathVariable Long id) {
         return new ResponseEntity<>(booksService.get(id), HttpStatus.OK);
