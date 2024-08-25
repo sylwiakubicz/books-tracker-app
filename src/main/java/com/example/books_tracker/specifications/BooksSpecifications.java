@@ -15,7 +15,7 @@ public class BooksSpecifications {
 
     private BooksSpecifications(){}
 
-    public static Specification<Books> findBooksSpecification(String title, String author, String genre) {
+    public static Specification<Books> findBooksSpecification(String title, String author, String genre, Integer year) {
         return (root, query, builder) -> {
             List<Predicate> predicateList = new ArrayList<>();
 
@@ -43,6 +43,11 @@ public class BooksSpecifications {
             if (genre != null) {
                 Join<Books, Genres> booksGenresJoin = root.join("genres");
                 predicateList.add(builder.equal(booksGenresJoin.get("name"), genre));
+            }
+
+
+            if (year != null) {
+                predicateList.add(builder.equal(root.get("publicationYear"), year));
             }
 
             return builder.and(predicateList.toArray(new Predicate[]{}));
