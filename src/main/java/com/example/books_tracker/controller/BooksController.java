@@ -38,9 +38,10 @@ public class BooksController {
     public ResponseEntity<Page<Books>> list(@RequestParam(required = false) String title,
                             @RequestParam(required = false) String author,
                             @RequestParam(required = false) String genre,
+                            @RequestParam(required = false) Integer year,
                             @PageableDefault @ParameterObject Pageable pageable) {
 
-        return new ResponseEntity<>(booksService.listBy(title, author, genre, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(booksService.listBy(title, author, genre, year,  pageable), HttpStatus.OK);
     }
 
     @GetMapping("/get/random")
