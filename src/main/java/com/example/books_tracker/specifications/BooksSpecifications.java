@@ -15,21 +15,29 @@ public class BooksSpecifications {
 
     private BooksSpecifications(){}
 
-    public static Specification<Books> findBooksSpecification(String title, String authorName, String authorSurname, String genre) {
+    public static Specification<Books> findBooksSpecification(String title, String author, String genre) {
         return (root, query, builder) -> {
             List<Predicate> predicateList = new ArrayList<>();
 
             if (title != null) {
                 predicateList.add(builder.like(root.get("title"), "%" + title + "%"));
             }
-            if (authorName != null) {
-                Join<Books, Authors> booksAuthorsJoin = root.join("authors");
-                predicateList.add(builder.equal(booksAuthorsJoin.get("name"), authorName));
-            }
 
-            if (authorSurname != null) {
+
+            if (author != null) {
+                String[] nameParts = author.split(" ");
+
                 Join<Books, Authors> booksAuthorsJoin = root.join("authors");
-                predicateList.add(builder.equal(booksAuthorsJoin.get("surname"), authorSurname));
+                List<Predicate> authorPredicates = new ArrayList<>();
+
+                if (nameParts.length >= 1) {
+                    for (String part : nameParts) {
+                        Predicate namePredicate = builder.like(booksAuthorsJoin.get("name"), "%" + part + "%");
+                        Predicate surnamePredicate = builder.like(booksAuthorsJoin.get("surname"), "%" + part + "%");
+                        authorPredicates.add(builder.or(namePredicate, surnamePredicate));
+                    }
+                    predicateList.add(builder.and(authorPredicates.toArray(new Predicate[0])));
+                }
             }
 
             if (genre != null) {
