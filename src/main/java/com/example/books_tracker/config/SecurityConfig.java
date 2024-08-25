@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                        .requestMatchers("/bookstate/*", "/bookstate", "/books/get/*", "/books/get").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/bookstate/*", "/bookstate", "/books/get/*", "/books/get", "/genres").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/auth/*", "/books/*").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
