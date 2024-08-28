@@ -15,17 +15,15 @@ public class BooksSpecifications {
 
     private BooksSpecifications(){}
 
-    public static Specification<Books> findBooksSpecification(String search, String title, String author, String genre, Integer year) {
+    public static Specification<Books> findBooksSpecification(String search, String genre, Integer year) {
         return (root, query, builder) -> {
             List<Predicate> predicateList = new ArrayList<>();
 
             if (search != null && !search.trim().isEmpty()) {
                 String[] searchTerms = search.split(" ");
 
-                // Join authors
                 Join<Books, Authors> booksAuthorsJoin = root.join("authors");
 
-                // Create predicates for each search term
                 List<Predicate> searchPredicates = new ArrayList<>();
                 for (String term : searchTerms) {
                     term = "%" + term + "%"; // Add wildcards for LIKE
@@ -37,29 +35,7 @@ public class BooksSpecifications {
                     searchPredicates.add(builder.or(titlePredicate, namePredicate, surnamePredicate));
                 }
 
-                // Combine all search predicates with AND
                 predicateList.add(builder.and(searchPredicates.toArray(new Predicate[0])));
-            }
-
-            if (title != null) {
-                predicateList.add(builder.like(root.get("title"), "%" + title + "%"));
-            }
-
-
-            if (author != null) {
-                String[] nameParts = author.split(" ");
-
-                Join<Books, Authors> booksAuthorsJoin = root.join("authors");
-                List<Predicate> authorPredicates = new ArrayList<>();
-
-                if (nameParts.length >= 1) {
-                    for (String part : nameParts) {
-                        Predicate namePredicate = builder.like(booksAuthorsJoin.get("name"), "%" + part + "%");
-                        Predicate surnamePredicate = builder.like(booksAuthorsJoin.get("surname"), "%" + part + "%");
-                        authorPredicates.add(builder.or(namePredicate, surnamePredicate));
-                    }
-                    predicateList.add(builder.and(authorPredicates.toArray(new Predicate[0])));
-                }
             }
 
             if (genre != null) {
