@@ -63,8 +63,8 @@ public class BooksService implements CrudService<Books, Long>{
         return randomBooks;
     }
 
-    public Page<Books> listBy(String title, String author, String genre, Integer year, Pageable pageable) {
-        return booksRepository.findAll(BooksSpecifications.findBooksSpecification(title, author, genre, year), pageable);
+    public Page<Books> listBy(String search, String title, String author, String genre, Integer year, Pageable pageable) {
+        return booksRepository.findAll(BooksSpecifications.findBooksSpecification(search, title, author, genre, year), pageable);
     }
 
     @Override

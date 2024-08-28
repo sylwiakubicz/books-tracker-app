@@ -15,9 +15,31 @@ public class BooksSpecifications {
 
     private BooksSpecifications(){}
 
-    public static Specification<Books> findBooksSpecification(String title, String author, String genre, Integer year) {
+    public static Specification<Books> findBooksSpecification(String search, String title, String author, String genre, Integer year) {
         return (root, query, builder) -> {
             List<Predicate> predicateList = new ArrayList<>();
+
+            if (search != null && !search.trim().isEmpty()) {
+                String[] searchTerms = search.split(" ");
+
+                // Join authors
+                Join<Books, Authors> booksAuthorsJoin = root.join("authors");
+
+                // Create predicates for each search term
+                List<Predicate> searchPredicates = new ArrayList<>();
+                for (String term : searchTerms) {
+                    term = "%" + term + "%"; // Add wildcards for LIKE
+
+                    Predicate titlePredicate = builder.like(root.get("title"), term);
+                    Predicate namePredicate = builder.like(booksAuthorsJoin.get("name"), term);
+                    Predicate surnamePredicate = builder.like(booksAuthorsJoin.get("surname"), term);
+
+                    searchPredicates.add(builder.or(titlePredicate, namePredicate, surnamePredicate));
+                }
+
+                // Combine all search predicates with AND
+                predicateList.add(builder.and(searchPredicates.toArray(new Predicate[0])));
+            }
 
             if (title != null) {
                 predicateList.add(builder.like(root.get("title"), "%" + title + "%"));
