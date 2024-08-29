@@ -26,7 +26,7 @@ public class BooksSpecifications {
 
                 List<Predicate> searchPredicates = new ArrayList<>();
                 for (String term : searchTerms) {
-                    term = "%" + term + "%"; // Add wildcards for LIKE
+                    term = "%" + term + "%";
 
                     Predicate titlePredicate = builder.like(root.get("title"), term);
                     Predicate namePredicate = builder.like(booksAuthorsJoin.get("name"), term);
