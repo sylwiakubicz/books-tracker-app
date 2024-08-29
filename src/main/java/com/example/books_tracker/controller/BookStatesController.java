@@ -36,10 +36,11 @@ public class BookStatesController {
     @GetMapping
     public ResponseEntity<Page<BookStates>> getAll(@RequestParam(required = false) String status,
                                                    @RequestParam(required = false) String genre,
+                                                   @RequestParam(required = false) String search,
                                                    @PageableDefault @ParameterObject Pageable pageable,
                                                    @AuthenticationPrincipal User user) {
         Users userObj = userRepository.findByUsername(user.getUsername()).orElse(null);
-        Page<BookStates> userBookStates = bookStatesService.getAll(userObj, status, genre, pageable);
+        Page<BookStates> userBookStates = bookStatesService.getAll(userObj, status, genre, search, pageable);
         return new ResponseEntity<>(userBookStates, HttpStatus.OK);
     }
 
