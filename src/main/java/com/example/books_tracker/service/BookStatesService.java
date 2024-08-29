@@ -35,18 +35,8 @@ public class BookStatesService {
         this.userRepository = userRepository;
     }
 
-    public Page<BookStates> getAll(Users user, String status, Integer rate, Pageable pageable) {
-        if (status != null) {
-            Statuses statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow(() -> new NoSuchElementException("Status not found"));
-            if (rate != null) {
-                return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(user, statusObject, rate), pageable);
-            }
-            return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(user, statusObject, null), pageable);
-        } else if (rate != null) {
-            return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(user, null, rate), pageable);
-        } else {
-            return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(user, null, null), pageable);
-        }
+    public Page<BookStates> getAll(Users user, String status, Integer rate, String genre, Pageable pageable) {
+        return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(user, status, rate, genre), pageable);
     }
 
     public BookStates getBookState(Long id) {
