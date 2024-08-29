@@ -35,8 +35,7 @@ public class BookStatesService {
         this.userRepository = userRepository;
     }
 
-    public Page<BookStates> getAll(Long user_id, String status, Integer rate, Pageable pageable) {
-        Users user = userRepository.findByUserId(user_id).orElseThrow(() -> new NoSuchElementException("User not found"));
+    public Page<BookStates> getAll(Users user, String status, Integer rate, Pageable pageable) {
         if (status != null) {
             Statuses statusObject = statusesRepository.findStatusesByStatusName(status).orElseThrow(() -> new NoSuchElementException("Status not found"));
             if (rate != null) {
