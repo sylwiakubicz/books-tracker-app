@@ -26,6 +26,18 @@ public class BookStatesSpecification {
             if (rate != null) {
                 predicateList.add(builder.greaterThanOrEqualTo(root.get("rate"), rate));
             }
+
+            // Sortowanie według określonego porządku statusów
+            query.orderBy(
+                    builder.asc(
+                            builder.selectCase()
+                                    .when(builder.equal(root.get("status").get("statusName"), "Currently reading"), 1)
+                                    .when(builder.equal(root.get("status").get("statusName"), "Want to read"), 2)
+                                    .when(builder.equal(root.get("status").get("statusName"), "Read"), 3)
+                                    .otherwise(4)
+                    )
+            );
+
             return builder.and(predicateList.toArray(new Predicate[]{}));
         };
     }
