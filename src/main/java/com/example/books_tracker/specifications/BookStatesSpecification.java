@@ -12,7 +12,7 @@ public class BookStatesSpecification {
     public BookStatesSpecification() {
     }
 
-    public static Specification<BookStates> findBookStatesSpecification(Users user, String status, Integer rate, String genre) {
+    public static Specification<BookStates> findBookStatesSpecification(Users user, String status, String genre) {
         return (root, query, builder) -> {
             List<Predicate> predicateList = new ArrayList<>();
 
@@ -21,10 +21,6 @@ public class BookStatesSpecification {
             if (status != null ) {
                 Join<BookStates, Statuses> bookStatesStatusesJoin = root.join("status");
                 predicateList.add(builder.equal(bookStatesStatusesJoin.get("statusName"), status));
-            }
-
-            if (rate != null) {
-                predicateList.add(builder.greaterThanOrEqualTo(root.get("rate"), rate));
             }
 
             if (genre != null) {

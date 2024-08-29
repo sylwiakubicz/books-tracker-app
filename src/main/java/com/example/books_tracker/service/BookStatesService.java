@@ -35,8 +35,8 @@ public class BookStatesService {
         this.userRepository = userRepository;
     }
 
-    public Page<BookStates> getAll(Users user, String status, Integer rate, String genre, Pageable pageable) {
-        return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(user, status, rate, genre), pageable);
+    public Page<BookStates> getAll(Users user, String status, String genre, Pageable pageable) {
+        return bookStateRepository.findAll(BookStatesSpecification.findBookStatesSpecification(user, status, genre), pageable);
     }
 
     public BookStates getBookState(Long id) {
