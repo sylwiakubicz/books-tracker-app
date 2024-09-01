@@ -77,6 +77,12 @@
         "relativeToChangelogFile": true,
         "file": "addUsersWithAdminAndUserRoles.xml"
       }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "AlterBooksTableDescriptionColumn.xml"
+      }
     }
   ]
 }
