@@ -31,7 +31,9 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -51,6 +53,21 @@ public class AuthController {
         this.userRepository = userRepository;
         this.userService = userService;
     }
+
+    @GetMapping("/role")
+    public ResponseEntity<Map<String, String>> getUserRole(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String role = authentication.getAuthorities().stream()
+                    .findFirst()
+                    .map(GrantedAuthority::getAuthority)
+                    .orElse(null);
+            Map<String, String> response = new HashMap<>();
+            response.put("role", role);
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpDTO signUpDTO, BindingResult bindingResult) throws UserAlreadyExistsException {
