@@ -101,9 +101,20 @@ public class AuthController {
             securityContextHolderStrategy.setContext(context);
             securityContextRepository.saveContext(context, request, response);
 
-            return new ResponseEntity<>(Map.of("message", "User signed in successfully"), HttpStatus.OK);
+            String role = authentication.getAuthorities().stream()
+                    .findFirst()
+                    .map(GrantedAuthority::getAuthority)
+                    .orElse(null);
+
+            if (role != null) {
+                Map<String, String> res = new HashMap<>();
+                res.put("role", role);
+                return ResponseEntity.ok(res);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
         }
     }
 
