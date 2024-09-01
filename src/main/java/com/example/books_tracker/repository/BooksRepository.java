@@ -22,4 +22,7 @@ public interface BooksRepository extends JpaRepository<Books, Long>, JpaSpecific
 
     @Query("SELECT e FROM Books e WHERE e.bookId IN :ids")
     List<Books> findByIds(@Param("ids") List<Long> ids);
+
+    @Query("SELECT b FROM Books b JOIN b.genres g WHERE g.name = :genre ORDER BY b.bookId DESC")
+    List<Books> findTop10NewestBooksByGenre(@Param("genre") String genre);
 }

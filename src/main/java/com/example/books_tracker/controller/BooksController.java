@@ -48,6 +48,11 @@ public class BooksController {
         return new ResponseEntity<>(booksService.randomBookList(10), HttpStatus.OK);
     }
 
+    @GetMapping("/get/newest")
+    public ResponseEntity<List<Books>> getNewest(@RequestParam String genre) {
+        return new ResponseEntity<>(booksService.getNewBooks(genre), HttpStatus.OK);
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<Books> get(@PathVariable Long id) {
         return new ResponseEntity<>(booksService.get(id), HttpStatus.OK);
