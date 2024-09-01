@@ -65,7 +65,9 @@ public class AuthController {
             response.put("role", role);
             return ResponseEntity.ok(response);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        Map<String, String> response = new HashMap<>();
+        response.put("role", null);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -114,7 +116,7 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
+            throw new BadCredentialsException("Invalid credentials");
         }
     }
 
