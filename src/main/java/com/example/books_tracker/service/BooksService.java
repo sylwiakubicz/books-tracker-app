@@ -64,7 +64,7 @@ public class BooksService implements CrudService<Books, Long>{
     }
 
     public List<Books> getNewBooks( String genre) {
-        return booksRepository.findTop10NewestBooksByGenre(genre);
+        return booksRepository.findTop10ByGenre(genre);
     }
 
     public Page<Books> listBy(String search, String title, Integer year, Pageable pageable) {
