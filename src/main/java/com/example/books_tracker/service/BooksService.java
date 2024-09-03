@@ -39,7 +39,7 @@ public class BooksService implements CrudService<Books, Long>{
         return booksRepository.findAll();
     }
 
-    @Cacheable(value = "randomBooksCache", key = "T(java.time.LocalDate).now().toString()")
+    @Cacheable(cacheNames = "randomBooksCache", key = "T(java.time.LocalDate).now().toString()")
     public List<Books> randomBookList(int limit) {
         Long minId = booksRepository.findMinId();
         Long maxId = booksRepository.findMaxId();
