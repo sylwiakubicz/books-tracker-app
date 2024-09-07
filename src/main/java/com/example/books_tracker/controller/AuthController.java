@@ -148,4 +148,19 @@ public class AuthController {
     public UserDetails getCurrentUser(@AuthenticationPrincipal User user) {
         return user;
     }
+
+    @GetMapping("/total")
+    public ResponseEntity<Long> getTotalUsers() {
+        return ResponseEntity.ok(userService.getTotalUsers());
+    }
+
+    @GetMapping("/admins/count")
+    public ResponseEntity<Long> getAdminUsersCount() {
+        return ResponseEntity.ok(userService.getAdminUsersCount());
+    }
+
+    @GetMapping("/users/count")
+    public ResponseEntity<Long> getUserUsersCount() {
+        return ResponseEntity.ok(userService.getUserUsersCount());
+    }
 }

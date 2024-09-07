@@ -54,4 +54,16 @@ public class UserService {
     public Users getUser(Long id) {
         return userRepository.findByUserId(id).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
+
+    public Long getTotalUsers() {
+        return userRepository.countTotalUsers();
+    }
+
+    public Long getAdminUsersCount() {
+        return userRepository.countAdminUsers();
+    }
+
+    public Long getUserUsersCount() {
+        return userRepository.countUserUsers();
+    }
 }
