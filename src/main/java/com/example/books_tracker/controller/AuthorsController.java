@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/authors")
@@ -37,15 +38,15 @@ public class AuthorsController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addAuthors(@RequestBody String authorsName,
+    public ResponseEntity<?> addAuthors(@RequestBody String authorsName,
                                              @RequestBody String authorsSurname) {
         authorsService.save(authorsName, authorsSurname);
-        return new ResponseEntity<>("Author created successfully", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "Author added"), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateAuthors(@RequestBody Authors authors) {
+    public ResponseEntity<?> updateAuthors(@RequestBody Authors authors) {
         authorsService.update(authors);
-        return new ResponseEntity<>("Author created successfully", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "Author updated"), HttpStatus.OK);
     }
 }
