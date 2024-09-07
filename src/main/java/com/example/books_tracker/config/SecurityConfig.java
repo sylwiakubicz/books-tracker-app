@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/role", "/books/get/random", "/books/get/newest").permitAll()
                         .requestMatchers("/bookstate/*", "/bookstate", "/books/get/*", "/books/get", "/genres").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/auth/*", "/books/*").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/*", "/books/*", "/authors").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .logout(logout -> logout

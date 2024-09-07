@@ -1,10 +1,15 @@
 package com.example.books_tracker.controller;
 
 import com.example.books_tracker.model.Authors;
+import com.example.books_tracker.model.Books;
 import com.example.books_tracker.service.AuthorsService;
+import com.example.books_tracker.specifications.AuthorsSpecification;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +29,9 @@ public class AuthorsController {
     }
 
     @GetMapping
-    public List<Authors> getAuthors(@RequestParam(required = false) String search,
-                                    @PageableDefault @ParameterObject Pageable pageable) {
-        return authorsService.getAllAuthors(search, pageable);
+    public ResponseEntity<Page<Authors>> getAuthors(@RequestParam(required = false) String search,
+                                                  @PageableDefault @ParameterObject Pageable pageable) {
+        return new ResponseEntity<>(authorsService.getAllAuthors(search,pageable), HttpStatus.OK);
+
     }
 }

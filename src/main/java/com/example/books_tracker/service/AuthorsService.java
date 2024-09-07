@@ -2,10 +2,10 @@ package com.example.books_tracker.service;
 
 import com.example.books_tracker.model.Authors;
 import com.example.books_tracker.repository.AuthorsRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 import static com.example.books_tracker.specifications.AuthorsSpecification.findAuthorsSpecification;
 
@@ -17,7 +17,7 @@ public class AuthorsService {
         this.authorsRepository = authorsRepository;
     }
 
-    public List<Authors> getAllAuthors(String search, Pageable pageable) {
+    public Page<Authors> getAllAuthors(String search, Pageable pageable) {
         return authorsRepository.findAll(findAuthorsSpecification(search), pageable);
     }
 }
