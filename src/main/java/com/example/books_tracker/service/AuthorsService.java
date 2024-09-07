@@ -20,4 +20,16 @@ public class AuthorsService {
     public Page<Authors> getAllAuthors(String search, Pageable pageable) {
         return authorsRepository.findAll(findAuthorsSpecification(search), pageable);
     }
+
+    public void save(String name, String surname) {
+        Authors author = new Authors();
+        author.setAuthorId(null);
+        author.setName(name);
+        author.setSurname(surname);
+        authorsRepository.save(author);
+    }
+
+    public void update(Authors author) {
+        authorsRepository.save(author);
+    }
 }

@@ -10,10 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,18 @@ public class AuthorsController {
     public ResponseEntity<Page<Authors>> getAuthors(@RequestParam(required = false) String search,
                                                   @PageableDefault @ParameterObject Pageable pageable) {
         return new ResponseEntity<>(authorsService.getAllAuthors(search,pageable), HttpStatus.OK);
+    }
 
+    @PostMapping
+    public ResponseEntity<String> addAuthors(@RequestBody String authorsName,
+                                             @RequestBody String authorsSurname) {
+        authorsService.save(authorsName, authorsSurname);
+        return new ResponseEntity<>("Author created successfully", HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateAuthors(@RequestBody Authors authors) {
+        authorsService.update(authors);
+        return new ResponseEntity<>("Author created successfully", HttpStatus.OK);
     }
 }
