@@ -2,9 +2,7 @@ package com.example.books_tracker.controller;
 
 import com.example.books_tracker.DTO.AuthorDTO;
 import com.example.books_tracker.model.Authors;
-import com.example.books_tracker.model.Books;
 import com.example.books_tracker.service.AuthorsService;
-import com.example.books_tracker.specifications.AuthorsSpecification;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
