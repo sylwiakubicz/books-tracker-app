@@ -16,9 +16,9 @@ public interface UserRepository extends JpaRepository<Users, Long>, JpaSpecifica
     @Query("SELECT COUNT(u) FROM Users u")
     Long countTotalUsers();
 
-    @Query("SELECT COUNT(u) FROM Users u WHERE u.role.role = 'ADMIN_ROLE'")
+    @Query("SELECT COUNT(u) FROM Users u JOIN u.role r WHERE r.role = 'ROLE_ADMIN'")
     Long countAdminUsers();
 
-    @Query("SELECT COUNT(u) FROM Users u WHERE u.role.role = 'USER_ROLE'")
+    @Query("SELECT COUNT(u) FROM Users u JOIN u.role r WHERE r.role = 'ROLE_USER'")
     Long countUserUsers();
 }
