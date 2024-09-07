@@ -127,11 +127,10 @@ public class AuthController {
     }
 
     @GetMapping
-    public Page<Users> getAllUsers(@RequestParam(required = false) String username,
-                                   @RequestParam(required = false) String email,
+    public Page<Users> getAllUsers(@RequestParam(required = false) String search,
                                    @RequestParam(required = false) String role,
                                    @PageableDefault @ParameterObject Pageable pageable) {
-        return userService.getAllUsers(username,email,role, pageable);
+        return userService.getAllUsers(search,role, pageable);
     }
 
     @GetMapping("/{id}")

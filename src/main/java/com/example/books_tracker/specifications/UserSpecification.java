@@ -12,16 +12,14 @@ public class UserSpecification {
     public UserSpecification() {
     }
 
-    public static Specification<Users> findUsersSpecification(String username, String email, String role) {
+    public static Specification<Users> findUsersSpecification(String search, String role) {
         return (root, query, builder) -> {
             List<Predicate> predicateList = new ArrayList<>();
 
-            if (username != null) {
-                predicateList.add(builder.like(root.get("username"), "%" + username + "%"));
-            }
-
-            if (email != null) {
-                predicateList.add(builder.like(root.get("email"), "%" + email + "%"));
+            if (search != null && !search.isEmpty()) {
+                Predicate usernamePredicate = builder.like(root.get("username"), "%" + search + "%");
+                Predicate emailPredicate = builder.like(root.get("email"), "%" + search + "%");
+                predicateList.add(builder.or(usernamePredicate, emailPredicate));
             }
 
             if (role != null) {

@@ -47,8 +47,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Page<Users> getAllUsers(String username, String email, String role, Pageable pageable) {
-        return userRepository.findAll(UserSpecification.findUsersSpecification(username, email, role), pageable);
+    public Page<Users> getAllUsers(String search, String role, Pageable pageable) {
+        return userRepository.findAll(UserSpecification.findUsersSpecification(search, role), pageable);
     }
 
     public Users getUser(Long id) {
