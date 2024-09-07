@@ -1,5 +1,6 @@
 package com.example.books_tracker.controller;
 
+import com.example.books_tracker.DTO.AuthorDTO;
 import com.example.books_tracker.model.Authors;
 import com.example.books_tracker.model.Books;
 import com.example.books_tracker.service.AuthorsService;
@@ -38,9 +39,8 @@ public class AuthorsController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addAuthors(@RequestBody String authorsName,
-                                             @RequestBody String authorsSurname) {
-        authorsService.save(authorsName, authorsSurname);
+    public ResponseEntity<?> addAuthors(@RequestBody AuthorDTO authorDTO) {
+        authorsService.save(authorDTO.getAuthorsName(), authorDTO.getAuthorsSurname());
         return new ResponseEntity<>(Map.of("message", "Author added"), HttpStatus.OK);
     }
 
