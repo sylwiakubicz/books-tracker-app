@@ -21,6 +21,10 @@ public class AuthorsService {
         return authorsRepository.findAll(findAuthorsSpecification(search), pageable);
     }
 
+    public Authors getAuthorsById(Long id) {
+        return authorsRepository.findById(id).orElse(null);
+    }
+
     public void save(String name, String surname) {
         Authors author = new Authors();
         author.setAuthorId(null);

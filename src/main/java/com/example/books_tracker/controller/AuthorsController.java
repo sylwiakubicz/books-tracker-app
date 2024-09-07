@@ -31,6 +31,11 @@ public class AuthorsController {
         return new ResponseEntity<>(authorsService.getAllAuthors(search,pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Authors> getAuthorsById(@PathVariable Long id) {
+        return new ResponseEntity<>(authorsService.getAuthorsById(id), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<String> addAuthors(@RequestBody String authorsName,
                                              @RequestBody String authorsSurname) {
