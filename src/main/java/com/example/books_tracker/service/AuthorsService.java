@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Optional;
+
 import static com.example.books_tracker.specifications.AuthorsSpecification.findAuthorsSpecification;
 
 @Service
@@ -26,11 +28,15 @@ public class AuthorsService {
     }
 
     public void save(String name, String surname) {
-        Authors author = new Authors();
-        author.setAuthorId(null);
-        author.setName(name);
-        author.setSurname(surname);
-        authorsRepository.save(author);
+        Optional<Authors> existingAuthor = authorsRepository.findByNameAndSurname(name, surname);
+
+        if (existingAuthor.isEmpty()) {
+            Authors author = new Authors();
+            author.setAuthorId(null);
+            author.setName(name);
+            author.setSurname(surname);
+            authorsRepository.save(author);
+        }
     }
 
     public void update(Authors author) {
