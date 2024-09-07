@@ -45,4 +45,10 @@ public class AuthorsController {
         authorsService.update(authors);
         return new ResponseEntity<>(Map.of("message", "Author updated"), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAuthors(@PathVariable Long id) {
+        authorsService.deleteById(id);
+        return new ResponseEntity<>(Map.of("message", "Author deleted"), HttpStatus.OK);
+    }
 }
