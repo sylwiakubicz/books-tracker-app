@@ -49,13 +49,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateUser(Long id, Users userDetails) {
+    public void updateUser(Long id, CreateUserByAdminDTO userDetails) {
         Users user = userRepository.findByUserId(id).orElseThrow(() -> new NoSuchElementException("User not found"));
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-        user.setRole(userDetails.getRole());
-        user.setActive(userDetails.getActive());
+        UserRoles role = roleRepository.findByRole(userDetails.getRole()).orElseThrow(() -> new NoSuchElementException("Role not found"));
+        user.setRole(role);
+        user.setActive(true);
         userRepository.save(user);
     }
 
