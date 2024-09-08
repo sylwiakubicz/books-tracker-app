@@ -145,7 +145,8 @@ public class AuthController {
     @PutMapping("/update/user/{id}")
     public ResponseEntity<?> updateUser(@RequestBody CreateUserByAdminDTO createUserByAdminDTO, @PathVariable Long id) {
         userService.updateUser(id, createUserByAdminDTO);
-        return ResponseEntity.status(HttpStatus.OK).body("User updated");
+        return new ResponseEntity<>(Map.of("message", "User updated successfully"), HttpStatus.OK);
+
     }
 
     @GetMapping
