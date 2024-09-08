@@ -164,7 +164,8 @@ public class AuthController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("User deleted");
+        return new ResponseEntity<>(Map.of("message", "User deleted"), HttpStatus.OK);
+
     }
 
     @GetMapping("/user")
