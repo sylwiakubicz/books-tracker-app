@@ -1,5 +1,6 @@
 package com.example.books_tracker.controller;
 
+import com.example.books_tracker.DTO.CreateUserByAdminDTO;
 import com.example.books_tracker.DTO.SignInDTO;
 import com.example.books_tracker.DTO.SignUpDTO;
 import com.example.books_tracker.model.Users;
@@ -89,6 +90,27 @@ public class AuthController {
         }
 
         userService.createUser(signUpDTO);
+        return new ResponseEntity<>(Map.of("message", "User registered successfully"), HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@Valid @RequestBody CreateUserByAdminDTO createUserByAdminDTO, BindingResult bindingResult) throws UserAlreadyExistsException {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getFieldErrors().stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            return new ResponseEntity<>(Map.of("message", errorMessage), HttpStatus.BAD_REQUEST);
+        }
+
+        if (userRepository.existsByEmail(createUserByAdminDTO.getEmail())) {
+            throw new UserAlreadyExistsException("Email is already taken!");
+        }
+
+        if (userRepository.existsByUsername(createUserByAdminDTO.getUsername())) {
+            throw new UserAlreadyExistsException("Username is already taken!");
+        }
+
+        userService.createUserByAdmin(createUserByAdminDTO);
         return new ResponseEntity<>(Map.of("message", "User registered successfully"), HttpStatus.OK);
     }
 

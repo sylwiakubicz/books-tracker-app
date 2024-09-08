@@ -1,5 +1,6 @@
 package com.example.books_tracker.service;
 
+import com.example.books_tracker.DTO.CreateUserByAdminDTO;
 import com.example.books_tracker.DTO.SignUpDTO;
 import com.example.books_tracker.model.UserRoles;
 import com.example.books_tracker.model.Users;
@@ -33,6 +34,17 @@ public class UserService {
         user.setEmail(signUpDTO.getEmail());
         user.setActive(true);
         UserRoles role = roleRepository.findByRole("ROLE_USER").orElseThrow(() -> new NoSuchElementException("Role not found"));
+        user.setRole(role);
+        userRepository.save(user);
+    }
+
+    public void createUserByAdmin(CreateUserByAdminDTO createUserByAdminDTO) {
+        Users user = new Users();
+        user.setUsername(createUserByAdminDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(createUserByAdminDTO.getPassword()));
+        user.setEmail(createUserByAdminDTO.getEmail());
+        user.setActive(true);
+        UserRoles role = roleRepository.findByRole(createUserByAdminDTO.getRole()).orElseThrow(() -> new NoSuchElementException("Role not found"));
         user.setRole(role);
         userRepository.save(user);
     }
