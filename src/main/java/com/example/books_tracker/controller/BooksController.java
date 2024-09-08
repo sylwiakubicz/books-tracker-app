@@ -121,7 +121,7 @@ public class BooksController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         booksService.delete(id);
-        return new ResponseEntity<>(Map.of("message", "User deleted"), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "Book deleted"), HttpStatus.OK);
 
     }
 }
