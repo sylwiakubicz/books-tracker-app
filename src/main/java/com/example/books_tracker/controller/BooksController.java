@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/books")
@@ -118,8 +119,9 @@ public class BooksController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         booksService.delete(id);
-        return new ResponseEntity<>("Book deleted", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "User deleted"), HttpStatus.OK);
+
     }
 }
