@@ -60,12 +60,12 @@ public class BooksController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@ModelAttribute Books books,
-                                         @RequestParam("image") MultipartFile file,
+    public ResponseEntity<?> create(@ModelAttribute Books books,
+                                         @RequestParam(value="image", required = false) MultipartFile file,
                                          @RequestParam("authorsJson") String authorsJson,
                                          @RequestParam("genresJson") String genresJson) throws IOException {
         if (booksRepository.existsBooksByISBN(books.getISBN())) {
-            return new ResponseEntity<>("Book existed!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("message", "Book existed!"), HttpStatus.BAD_REQUEST);
         }
 
         List<Authors> authors = JsonUtils.parseAuthors(authorsJson);
@@ -74,7 +74,7 @@ public class BooksController {
         books.setAuthors(authors);
         books.setGenres(genres);
 
-        if (!file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             File tempFile = File.createTempFile("temp", null);
             file.transferTo(tempFile);
             UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile, file.getOriginalFilename());
@@ -84,18 +84,18 @@ public class BooksController {
         }
 
         booksService.create(books);
-        return new ResponseEntity<>("Book created successfully", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "Book created successfully"), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id,
+    public ResponseEntity<?> update(@PathVariable Long id,
                                          @ModelAttribute Books books,
-                                         @RequestParam("image")MultipartFile file,
+                                         @RequestParam(value="image", required = false)MultipartFile file,
                                          @RequestParam("authorsJson") String authorsJson,
                                          @RequestParam("genresJson") String genresJson) throws IOException {
 
         if (!booksRepository.existsBooksByBookId(id)) {
-            return new ResponseEntity<>("Book not existed", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Map.of("message", "Book not existed"),  HttpStatus.NOT_FOUND);
         }
         books.setBookId(id);
 
@@ -115,7 +115,7 @@ public class BooksController {
         }
 
         booksService.updateBook(books);
-        return new ResponseEntity<>("Book updated successfully", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "Book updated successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
