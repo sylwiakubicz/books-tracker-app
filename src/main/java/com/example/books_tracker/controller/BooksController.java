@@ -105,7 +105,7 @@ public class BooksController {
         books.setAuthors(authors);
         books.setGenres(genres);
 
-        if (!file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             File tempFile = File.createTempFile("temp", null);
             file.transferTo(tempFile);
             UploadResponse uploadResponse = uploadService.uploadImageToDrive(tempFile, file.getOriginalFilename());
