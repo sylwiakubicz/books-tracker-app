@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: skubicz
-    password: ${MORFEUSZ_PASSWORD}
-    url: jdbc:sqlserver://morfeusz.wszib.edu.pl:1433;databaseName=skubicz;encrypt=false;
+    username: ${MYSQLUSER}
+    password: ${MYSQL_ROOT_PASSWORD}
+    url: ${DATABASE_URL}
   liquibase:
     change-log: classpath:db/changelog/changelog-master.json
     enabled: true
