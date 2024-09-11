@@ -39,7 +39,7 @@ public class GenresController {
         return new ResponseEntity<>(genresPage, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> addGenres(@RequestBody GenreDTO genreDTO) {
         String genres = genreDTO.getGenres();
         if (genresRepository.findByName(genres).isEmpty()) {
