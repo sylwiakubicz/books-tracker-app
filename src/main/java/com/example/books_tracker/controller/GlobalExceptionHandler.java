@@ -1,6 +1,7 @@
 package com.example.books_tracker.controller;
 
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,4 +42,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Map.of("message", "Wrong username or password"), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return new ResponseEntity<>(Map.of("message", "Cannot delete entry as it is referenced by other records"), HttpStatus.CONFLICT);
+    }
 }
