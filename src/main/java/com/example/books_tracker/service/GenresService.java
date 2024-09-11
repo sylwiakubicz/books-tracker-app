@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.books_tracker.specifications.AuthorsSpecification.findAuthorsSpecification;
-import static com.example.books_tracker.specifications.GenresSpecification.findGenresSpecification;
 
 @Service
 public class GenresService {
