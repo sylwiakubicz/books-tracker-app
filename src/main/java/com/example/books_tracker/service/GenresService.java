@@ -38,10 +38,12 @@ public class GenresService {
     }
 
     public void updateGenre(Long id, String genres) {
-        System.out.printf("from service ");
-        System.out.println(genres);
         Genres genre = genresRepository.findById(id).get();
         genre.setName(genres);
         genresRepository.save(genre);
+    }
+
+    public void deleteGenre(Long id) {
+        genresRepository.deleteById(id);
     }
 }
