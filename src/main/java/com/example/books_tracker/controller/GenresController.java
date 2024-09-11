@@ -32,6 +32,11 @@ public class GenresController {
         return new ResponseEntity<>(genresService.getAllGenres(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Genres> getGenre(@PathVariable Long id) {
+        return new ResponseEntity<>(genresService.getGenre(id), HttpStatus.OK);
+    }
+
     @GetMapping("/pagable")
     public ResponseEntity<Page<Genres>> getGenres(@RequestParam(required = false) String search,
                                                                                   @PageableDefault @ParameterObject Pageable pageable) {

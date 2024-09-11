@@ -22,6 +22,10 @@ public class GenresService {
         this.genresRepository = genresRepository;
     }
 
+    public Genres getGenre(Long id) {
+        return genresRepository.findById(id).get();
+    }
+
     public List<Genres> getAllGenres() {
         return genresRepository.findAll();
     }
