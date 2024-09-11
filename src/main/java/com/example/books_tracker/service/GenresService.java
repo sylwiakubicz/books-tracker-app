@@ -29,4 +29,19 @@ public class GenresService {
     public Page<Genres> getAllGenres(String search, Pageable pageable) {
         return genresRepository.findAll(GenresSpecification.findGenresSpecification(search), pageable);
     }
+
+    public void createGenre(String genres) {
+        Genres genre = new Genres();
+        genre.setName(genres);
+        genre.setGenresId(null);
+        genresRepository.save(genre);
+    }
+
+    public void updateGenre(Long id, String genres) {
+        System.out.printf("from service ");
+        System.out.println(genres);
+        Genres genre = genresRepository.findById(id).get();
+        genre.setName(genres);
+        genresRepository.save(genre);
+    }
 }
