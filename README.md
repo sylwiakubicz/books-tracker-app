@@ -1,12 +1,7 @@
-<h1>books-tracker</h1>
+<h1>Pandary API</h1>
 
 <h2>Project Description</h2>
-Books Tracker is a web application designed for managing a personal book library and tracking reading progress. 
-Administrators have full control over the book database, including adding new books, editing existing ones, 
-deleting books, and managing user accounts. Users can browse available books and add them to their personal 
-lists, assigning statuses such as read, in progress, and to read. This project is perfect for book enthusiasts 
-looking to organize their library and keep track of their reading progress.
-
+The backend of the Pandary application is powered by Spring, providing a robust and scalable API that supports full CRUD (Create, Read, Update, Delete) operations for all database tables. The database structure consists of several interconnected tables, including users, books, authors, genres, statuses, and user roles, allowing for comprehensive management of a personal library. The backend manages all user interactions such as retrieving book details, updating reading statuses, and administering user accounts. It serves as the backbone of the application, efficiently handling all the business logic and data persistence, while interacting with the frontend to deliver a seamless experience to both administrators and users. 
 
 <h2>Author</h2>
 <p>Sylwia Kubicz</p>
