@@ -5,5 +5,10 @@ The backend of the Pandary application is powered by Spring, providing a robust 
 <br>
 <br>
 Link to the corresponding <a href="https://github.com/sylwiakubicz/books-tracker-front/tree/master">frontend repository</a>.
+
+<h2>Database structure</h2>
+
+![image](https://github.com/user-attachments/assets/7557c356-9594-42b9-bbe9-8ccfea453efa)
+
 <h2>Author</h2>
 <p>Sylwia Kubicz</p>
