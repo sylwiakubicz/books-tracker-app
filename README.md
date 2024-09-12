@@ -43,6 +43,8 @@ During this project, I gained experience with various technologies and framework
   <li>Managed relational databases, created schemas, and handled database migrations using <strong>Liquibase</strong>, ensuring consistency across different environments.</li>
   <li>Integrated <strong>Google Drive API</strong> for file uploads, handling authentication using service keys, and managing file operations through Google Client libraries, including GoogleCredential and Drive.</li>
   <li>Learned to manage user sessions in a distributed environment using Redis, enhancing the scalability of web applications.</li>
+  <li>Implemented <strong>pagination</strong> to manage and display data in a user-friendly way, enhancing the user experience when dealing with large datasets.</li>
+  <li>Deployed the database and backend repository using <strong>Railway.app</strong>, ensuring smooth hosting and continuous integration for the backend services.</li>
 </ul>
 
 <h2>How to Run the Application and Load Test Data</h2>
