@@ -63,7 +63,7 @@ You can use the following default credentials to test the application:
 > **NOTE:**  
 > This method works only if the application is hosted online and the link is provided by the developers.
 
-### Method 2: Using an existing hosted backend database
+### Method 2: Testing the application locally using GitHub
 
 1. **Clone the repository from GitHub**
 
@@ -77,33 +77,42 @@ You can use the following default credentials to test the application:
     cd books-tracker-app
     ```
 
-3. **Build the project**
-
-    ```bash
-    ./gradlew build
-    ```
-
-4. **Start the Spring Boot application**
-
-    ```bash
-    ./gradlew bootRun
-    ```
-
-### Method 3: Creating and using your own local database
-
-1. **Set up MySQL database**
+3. **Set up MySQL database**
 
    Install MySQL and create a new database for the application. For example, you can create a database named `books_db`.
 
-2. **Set environment variables**
+4. **Set environment variables**
 
    - `MYSQLUSER`: Your MySQL username.
    - `MYSQL_ROOT_PASSWORT`: Your MySQL root password or database user password.
    - `DATABASE_URL`: URL of your local MySQL database.
+     
+5. **Build the project**
 
-3. **Run the application**
+    ```bash
+    ./gradlew build # on windows gradlew.bat build
+    ```
+
+6. **Run the application**
    
    Liquibase is integrated with the Spring Boot project and will automatically generate all the necessary tables and insert static test data after you start the application. Simply run:
 
    ```bash
-   ./gradlew bootRun
+   ./gradlew bootRun # on windows gradlew.bat bootRun
+    ```
+
+7. **Load additional data** (Optional)
+
+     You can also load extra data into the books, authors, genres, and other linking tables by downloading the following CSV files and importing them into your MySQL database:
+    
+   - [books.csv](https://github.com/user-attachments/files/16999242/books.csv)
+   - [authors.csv](https://github.com/user-attachments/files/16999245/authors.csv)
+   - [genres.csv](https://github.com/user-attachments/files/16999231/genres.csv)
+   - [books_genres.csv](https://github.com/user-attachments/files/16999246/books_genres.csv)
+   - [books_authors.csv](https://github.com/user-attachments/files/16999247/books_authors.csv)
+
+    You can now connect the frontend application or test the API endpoints using a tool like Postman.
+
+## Author
+
+Sylwia Kubicz
