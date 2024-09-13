@@ -74,7 +74,7 @@ You can use the following default credentials to test the application:
 2. **Navigate to the project directory**
 
     ```bash
-    cd books-tracker-app
+    cd books-tracker-app 
     ```
 
 3. **Set up MySQL database**
@@ -90,7 +90,7 @@ You can use the following default credentials to test the application:
 5. **Build the project**
 
     ```bash
-    ./gradlew build # on windows gradlew.bat build
+    ./gradlew build # Or gradlew.bat build for Windows
     ```
 
 6. **Run the application**
@@ -98,7 +98,7 @@ You can use the following default credentials to test the application:
    Liquibase is integrated with the Spring Boot project and will automatically generate all the necessary tables and insert static test data after you start the application. Simply run:
 
    ```bash
-   ./gradlew bootRun # on windows gradlew.bat bootRun
+   ./gradlew bootRun # Or gradlew.bat bootRun for Windows
     ```
 
 7. **Load additional data** (Optional)
