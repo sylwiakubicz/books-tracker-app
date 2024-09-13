@@ -47,7 +47,81 @@ During this project, I gained experience with various technologies and framework
   <li>Deployed the database and backend repository using <strong>Railway.app</strong>, ensuring smooth hosting and continuous integration for the backend services.</li>
 </ul>
 
-<h2>How to Run the Application and Load Test Data</h2>
+<h2>How to Run the Application and Load Test Data</h2> 
+
+### Method 1: Easiest way to test the application
+
+If you want to test by the frontend Angular application that interacts with the API, you can use a provided link to an online hosted version of the frontend app.
+
+1. [Click the link](https://pandary.vercel.app/) shared by the project maintainers.
+2. The application will open in your browser, and you can test it without any additional steps.
+
+You can use the following default credentials to test the application:
+
+- **Admin user:**
+  - **Username:** `adminUser`
+  - **Password:** `admin`
+
+- **Regular user:**
+  - **Username:** `regularUser`
+  - **Password:** `user`
+
+> **NOTE:**  
+> This method works only if the application is hosted online and the link is provided by the developers.
+
+### Method 2: Using an existing hosted backend database
+
+1. **Clone the repository from GitHub**
+
+    ```bash
+    git clone https://github.com/sylwiakubicz/books-tracker-app.git
+    ```
+
+2. **Navigate to the project directory**
+
+    ```bash
+    cd books-tracker-app
+    ```
+
+3. **Build the project**
+
+    ```bash
+    ./gradlew build
+    ```
+
+4. **Start the Spring Boot application**
+
+    ```bash
+    ./gradlew bootRun
+    ```
+
+### Method 3: Creating and using your own local database
+
+1. **Set up MySQL database**
+ 
+   Install MySQL and create a new database for the application. For example, you can create a database named books_db.
+
+2. **Set enviroment variables**
+
+   - `MYSQLUSER`: Your MySQL username.
+   - `MYSQL_ROOT_PASSWORT`: Your MySQL root password or database user password.
+   - `DATABASE_URL`: URL of your local MySQL database.
+
+3. **Run the application**
+   
+   Liquibase is integrated with the Spring Boot project and will automatically generate all the necessary tables and insert static test data after you start the application. Simply run:
+
+   ```bash
+   ./gradlew bootRun
+   ```
+   
+4. **Load additional data** (Optional)
+   
+You can also load extra data into the books, authors, genres, and other linking tables by downloading the following CSV files and importing them into your MySQL database:
+
+
+
+You can now connect the frontend application or test the API endpoints using a tool like Postman.
 
 <h2>Author</h2>
 <p>Sylwia Kubicz</p>
