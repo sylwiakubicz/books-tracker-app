@@ -1,4 +1,4 @@
-[authors_data.csv](https://github.com/user-attachments/files/16998592/authors_data.csv)<h1>Pandary API</h1>
+<h1>Pandary API</h1>
 
 <h2>Project Description</h2>
 The backend of the Pandary application is powered by Spring Boot, providing a robust and scalable API that supports full CRUD (Create, Read, Update, Delete) operations for all database tables. The database structure consists of several interconnected tables, including users, books, authors, genres, statuses, and user roles, allowing for comprehensive management of a personal library. The backend manages all user interactions such as retrieving book details, updating reading statuses, and administering user accounts. It serves as the backbone of the application, efficiently handling all the business logic and data persistence, while interacting with the frontend to deliver a seamless experience to both administrators and users. 
@@ -118,9 +118,12 @@ You can use the following default credentials to test the application:
 4. **Load additional data** (Optional)
    
   You can also load extra data into the books, authors, genres, and other linking tables by downloading the following CSV files and importing them into your MySQL database:
-
-
-
+  
+  - [Downoload authors.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/authors.csv)
+  - [Downoload books.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/books.csv)
+  - [Downoload genres.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/genres.csv)
+  - [Downoload books_genres.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/books_genres.csv)
+  - [Downoload books_authors.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/books_authors.csv)
 
   You can now connect the frontend application or test the API endpoints using a tool like Postman.
 
