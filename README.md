@@ -119,11 +119,11 @@ You can use the following default credentials to test the application:
    
   You can also load extra data into the books, authors, genres, and other linking tables by downloading the following CSV files and importing them into your MySQL database:
   
-  - [Downoload authors.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/authors.csv)
-  - [Downoload books.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/books.csv)
-  - [Downoload genres.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/genres.csv)
-  - [Downoload books_genres.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/books_genres.csv)
-  - [Downoload books_authors.csv](https://github.com/sylwiakubicz/books-tracker-app/blob/main/books_authors.csv)
+ - [books.csv](https://github.com/user-attachments/files/16999242/books.csv)
+ - [authors.csv](https://github.com/user-attachments/files/16999245/authors.csv)
+ - [genres.csv](https://github.com/user-attachments/files/16999231/genres.csv)
+ - [books_genres.csv](https://github.com/user-attachments/files/16999246/books_genres.csv)
+ - [books_authors.csv](https://github.com/user-attachments/files/16999247/books_authors.csv)
 
   You can now connect the frontend application or test the API endpoints using a tool like Postman.
 
