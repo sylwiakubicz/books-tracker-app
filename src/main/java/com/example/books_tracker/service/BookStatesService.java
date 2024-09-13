@@ -97,11 +97,7 @@ public class BookStatesService {
             bookState.setRate(null);
         } else if (status.getId() == 2) {
             bookState.setStartDate(fromStringToLocalDateTime(stateData.getStartDate()));
-            if (bookState.getCurrentPage() == null) {
-                bookState.setCurrentPage(0);
-            } else {
-                bookState.setCurrentPage(stateData.getCurrentPage());
-            }
+            bookState.setCurrentPage(stateData.getCurrentPage());
             bookState.setEndDate(null);
             bookState.setRate(null);
         } else {
